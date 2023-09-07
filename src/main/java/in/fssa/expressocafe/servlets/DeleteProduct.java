@@ -16,7 +16,7 @@ import in.fssa.expressocafe.service.ProductService;
 /**
  * Servlet implementation class DeleteProduct
  */
-@WebServlet("/product/delete")
+@WebServlet("/deleteproduct")
 public class DeleteProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

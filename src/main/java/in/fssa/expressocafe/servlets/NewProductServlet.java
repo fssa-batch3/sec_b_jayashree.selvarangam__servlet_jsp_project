@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class NewProductServlet
  */
-@WebServlet("/product/new")
+
+@WebServlet("/newproduct")
 public class NewProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -22,14 +23,13 @@ public class NewProductServlet extends HttpServlet {
      */
     public NewProductServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		RequestDispatcher rd = request.getRequestDispatcher("/add_product.jsp");
 		rd.forward(request, response);
 				

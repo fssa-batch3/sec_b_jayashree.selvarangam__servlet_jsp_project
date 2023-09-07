@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>List all produts</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -43,9 +43,56 @@
   button:hover {
     background-color: #0056b3;
   }
+  
+  /* Reset default styles */
+body, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+/* Logo styles */
+.logo img {
+    width: 100px; /* Adjust the logo size as needed */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Center the logo horizontally */
+}
+
+/* Navigation styles */
+nav {
+    text-align: center;
+}
+
+.nav-links li {
+    display: inline-block;
+    margin-right: 20px; /* Adjust the spacing between navigation links */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ff6600; /* Change the link color on hover */
+}
+  
 </style>
 </head>
+	
 <body>
+<%@ include file="header_admin.jsp" %>
 	<%
 	List<Product> productList = new ArrayList<>();
 	/* if(request.getParameter("productId") != null){
@@ -62,6 +109,7 @@
 		 	<th>view</th>
 			<th>update</th>
 			<th>delete</th>
+			<th>update  with prices</th>
 			<th>Id</th>
 			<th>ProductName</th>
 			<th>Product Description</th>
@@ -76,19 +124,24 @@
 		%>
 		<tr>
 			<td>
-			<a href="products/details?productId=<%= product1.getProduct_id()%>">
+			<a href="details?productId=<%= product1.getProduct_id()%>">
 			<button class="view" type="submit">View</button>
 			</a>
 			</td>
 			
 			<td>
-			<a href="product/edit?productId=<%= product1.getProduct_id()%>">
+			<a href="editproduct?productId=<%= product1.getProduct_id()%>">
 			<button type="submit">update</button> 
 			</a>
 			</td>
 			<td>
-			<a href="product/delete?productId=<%=product1.getProduct_id()%>">
+			<a href="deleteproduct?productId=<%=product1.getProduct_id()%>">
 			<button type="submit">delete</button> 
+			</a>
+			</td>
+			<td>
+			<a href="edit_product_with_prices?productId=<%=product1.getProduct_id()%>">
+			<button type="submit">update with price</button> 
 			</a>
 			</td>
 			

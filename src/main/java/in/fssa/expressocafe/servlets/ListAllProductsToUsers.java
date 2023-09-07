@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.fssa.expressocafe.exception.ServiceException;
+import in.fssa.expressocafe.exception.ValidationException;
 import in.fssa.expressocafe.model.Product;
 import in.fssa.expressocafe.service.ProductService;
 
@@ -26,7 +27,6 @@ public class ListAllProductsToUsers extends HttpServlet {
      */
     public ListAllProductsToUsers() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -37,13 +37,23 @@ public class ListAllProductsToUsers extends HttpServlet {
 
 		ProductService productservice = new ProductService();
 		try {
-			
-		List<Product> productList = productservice.getAllProducts();
-		request.setAttribute("ProductList", productList);
-		RequestDispatcher rd = request.getRequestDispatcher("list_all_products.jsp");
-		rd.forward(request, response);
-		
+			String categoryId =request.getParameter("cate_id");
+			if(categoryId==null) {
+			List<Product> productList = productservice.getAllProducts();
+			request.setAttribute("ProductList", productList);
+			RequestDispatcher rd = request.getRequestDispatcher("list_all_products.jsp");
+			rd.forward(request, response);
+		}
+		else {
+			int cateId = Integer.parseInt(categoryId);
+			List<Product> productList = productservice.getAllproductswithCategoryId(cateId);
+			request.setAttribute("ProductList", productList);
+			RequestDispatcher rd = request.getRequestDispatcher("list_all_products.jsp");
+			rd.forward(request, response);	
+		}
 		} catch (ServiceException e) {
+			e.printStackTrace();
+		} catch (ValidationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

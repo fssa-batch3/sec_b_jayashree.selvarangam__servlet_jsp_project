@@ -24,7 +24,7 @@ import in.fssa.expressocafe.service.ProductService;
 /**
  * Servlet implementation class CreateProductServlet
  */
-@WebServlet("/product/create")
+@WebServlet("/createproduct")
 public class CreateProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,15 +33,9 @@ public class CreateProductServlet extends HttpServlet {
      */
     public CreateProductServlet() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	
-	
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductService productService = new ProductService();
@@ -50,8 +44,8 @@ public class CreateProductServlet extends HttpServlet {
         
         String productName = request.getParameter("name");
         String productDescription = request.getParameter("description");
-        int cate =  Integer.parseInt(request.getParameter("category"));
-
+        Integer categoryId = Integer.parseInt(request.getParameter("categoryId"));
+		
         Product newProduct = new Product();
         newProduct.setName(productName);
         newProduct.setDescription(productDescription);
@@ -83,22 +77,27 @@ public class CreateProductServlet extends HttpServlet {
         }
         
         Category cate1 = new Category();
-        cate1.setCategoryId(cate);
+        cate1.setCategoryId(categoryId);
         
         newProduct.setCategory(cate1);
         newProduct.setPriceList(priceList);
         try {
             productService.createProduct(newProduct);
             response.sendRedirect(request.getContextPath()+"/getProducts");
-          
         } 
         catch (ServiceException e) {
 			e.printStackTrace();
 			out.println(e.getMessage());
+			String getError = e.getMessage();
+			response.sendRedirect("newproduct?error=" + getError);
+
 		} 
         catch (ValidationException e) {
 			e.printStackTrace();
 			out.println(e.getMessage());
+			String getError = e.getMessage();
+			response.sendRedirect("newproduct?error=" + getError);
+
 		}
     }
 

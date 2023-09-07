@@ -48,8 +48,7 @@ public class GetAllProductServlet extends HttpServlet {
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

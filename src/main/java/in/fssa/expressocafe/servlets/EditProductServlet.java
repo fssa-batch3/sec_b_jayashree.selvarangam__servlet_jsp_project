@@ -18,7 +18,7 @@ import in.fssa.expressocafe.service.ProductService;
 /**
  * Servlet implementation class EditBookServlet
  */
-@WebServlet("/product/edit")
+@WebServlet("/editproduct")
 public class EditProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -37,7 +37,6 @@ public class EditProductServlet extends HttpServlet {
 		protected void doGet(HttpServletRequest request, HttpServletResponse response)
 				throws ServletException, IOException {
 			int id = Integer.parseInt( request.getParameter("productId") );
-			
 			try {
 				Product product = new ProductService().findProductWithProductId(id);
 				request.setAttribute("product", product);
@@ -45,11 +44,15 @@ public class EditProductServlet extends HttpServlet {
 				rd.forward(request, response);
 			
 			} catch (in.fssa.expressocafe.exception.ServiceException | ValidationException e) {
-			
 				e.printStackTrace();
 			}
 			
 			
+		}
+		
+		protected void doPost(HttpServletRequest request, HttpServletResponse response)
+				throws ServletException, IOException {
+			doGet(request, response);
 		}
 	}
 

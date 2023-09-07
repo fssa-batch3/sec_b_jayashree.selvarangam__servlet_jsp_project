@@ -3,6 +3,7 @@ package in.fssa.expressocafe.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,7 @@ import in.fssa.expressocafe.service.ProductService;
 /**
  * Servlet implementation class UpdateBookServlet
  */
-@WebServlet("/product/update")
+@WebServlet("/updateproduct")
 public class UpdateProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -42,12 +43,12 @@ public class UpdateProductServlet extends HttpServlet {
 			int productId = Integer.parseInt(request.getParameter("id"));
 			String name = request.getParameter("name");
 			String description = request.getParameter("description");
-			int cateId = Integer.parseInt(request.getParameter("category"));
+			Integer categoryId = Integer.parseInt(request.getParameter("categoryId"));
 			
 			ProductService productService = new ProductService();
 			Product product = new Product();
 			Category cate = new Category();
-			cate.setCategoryId(cateId);
+			cate.setCategoryId(categoryId);
 			product.setName(name);
 			product.setDescription(description);
 			product.setProduct_id(productId);
@@ -59,15 +60,16 @@ public class UpdateProductServlet extends HttpServlet {
 				productService.updateProduct(product);
 				out.println("Product updated successfully");
 				response.sendRedirect(request.getContextPath()+ "/getProducts");
-				
 			} catch (ServiceException e) {
-				e.printStackTrace();
-				out.println(e.getMessage());
-				throw new ServletException(e);
+				
+				request.setAttribute("ERRORDETAILS", e.getMessage());
+				RequestDispatcher rd = request.getRequestDispatcher("editproduct?productId=" +productId );
+				rd.forward(request, response);
 			} catch (ValidationException e) {
-				e.printStackTrace();
-				out.println(e.getMessage());
-				throw new ServletException(e);
+				
+				request.setAttribute("ERRORDETAILS", e.getMessage());
+				RequestDispatcher rd = request.getRequestDispatcher("editproduct?productId=" +productId );
+				rd.forward(request, response);
 			}
 		}
 		

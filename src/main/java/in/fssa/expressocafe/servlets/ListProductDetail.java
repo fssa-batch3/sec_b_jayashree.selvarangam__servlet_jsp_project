@@ -20,7 +20,7 @@ import in.fssa.expressocafe.service.ProductService;
 /**
  * Servlet implementation class ListProductDetail
  */
-@WebServlet("/products/details")
+@WebServlet("/details")
 public class ListProductDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

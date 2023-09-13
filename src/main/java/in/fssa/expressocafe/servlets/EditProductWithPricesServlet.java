@@ -1,6 +1,7 @@
 package in.fssa.expressocafe.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -31,20 +32,23 @@ public class EditProductWithPricesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("productId") );
-		
+		 // Create a PrintWriter to send responses to the client
+        PrintWriter out = response.getWriter();
+       
 		try {
+			 // Retrieve the product information based on the provided ID
 			Product product = new ProductService().findProductWithProductId(id);
+			// Set the product as an attribute in the request
 			request.setAttribute("product", product);
+			 // Forward the request and response to the update_product_with_price.jsp page
 			RequestDispatcher rd = request.getRequestDispatcher("/update_product_with_price.jsp");
-			rd.forward(request, response);
-		
+			rd.forward(request, response);		
 		} catch (in.fssa.expressocafe.exception.ServiceException | ValidationException e) {
-		
 			e.printStackTrace();
-		}
-		
-		
+			out.println(e.getMessage());
+		}	
 	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);

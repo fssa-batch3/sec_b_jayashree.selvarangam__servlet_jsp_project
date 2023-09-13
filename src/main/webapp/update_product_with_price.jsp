@@ -113,18 +113,18 @@ nav {
 <%@ include file="header_admin.jsp" %>
 
 
-<%
-			String errorMessage = (String) request.getAttribute("ERRORDETAILS");
-			%>
-			<%
-			if (errorMessage != null) {
-			%>
-			<div class="error_div">
+	<%
+		String errorMessage = (String) request.getAttribute("ERRORDETAILS");
+	%>
+	<%
+		if (errorMessage != null) {
+	%>
+		<div class="error_div">
 				<p><%=errorMessage%></p>
-			</div>
-			<%
-			}
-			%>
+		</div>
+	<%
+		}
+	%>
 <%  Product product = (Product) request.getAttribute("product");   %>
 <form action="update_with_prices?productId=<%= product.getProduct_id()  %>" method="post">
     <% CategoryService category = new CategoryService(); %>

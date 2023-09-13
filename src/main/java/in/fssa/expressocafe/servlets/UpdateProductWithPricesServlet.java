@@ -37,17 +37,20 @@ public class UpdateProductWithPricesServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		// Extract data from the request parameters
 		int productId = Integer.parseInt(request.getParameter("productId"));
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		Integer categoryId = Integer.parseInt(request.getParameter("categoryId"));
+		 // Create a new Product object and populate its fields
         Product newProduct = new Product();
         newProduct.setName(name);
         newProduct.setDescription(description);
         newProduct.setProduct_id(productId);
+        
         List<Price> priceList = new ArrayList<>();
-
+        // Check if prices for different sizes are provided in the request
+        // and create Price objects if available
         if (request.getParameter("largePrice") != null) {
             double largePrice = Double.parseDouble(request.getParameter("largePrice"));
             System.out.print(largePrice);
@@ -82,10 +85,11 @@ public class UpdateProductWithPricesServlet extends HttpServlet {
         newProduct.setCategory(cate1);
         newProduct.setPriceList(priceList);
       
-		
+        // Obtain a PrintWriter to send responses to the client
 		PrintWriter out = response.getWriter();
 		ProductService productService= new 	ProductService();
 		try {
+			// Attempt to update the product with the provided data
 			productService.updateProductWithPrices(newProduct);
 			out.println("Product updated successfully");
 			response.sendRedirect(request.getContextPath()+ "/getProducts");
@@ -93,6 +97,7 @@ public class UpdateProductWithPricesServlet extends HttpServlet {
 		} catch (ServiceException e) {
 			e.printStackTrace();
 			out.println(e.getMessage());
+			// Handle a ServiceException, print the error, and forward to an error page
 			request.setAttribute("ERRORDETAILS", e.getMessage());
 			RequestDispatcher rd = request.getRequestDispatcher("edit_product_with_prices?productId=" +productId );
 			rd.forward(request, response);
@@ -100,10 +105,9 @@ public class UpdateProductWithPricesServlet extends HttpServlet {
 			e.printStackTrace();
 			out.println(e.getMessage());
 			request.setAttribute("ERRORDETAILS", e.getMessage());
+			// Handle a ServiceException, print the error, and forward to an error page
 			RequestDispatcher rd = request.getRequestDispatcher("edit_product_with_prices?productId=" +productId );
 			rd.forward(request, response);
 		}
 	}
-
-
 }

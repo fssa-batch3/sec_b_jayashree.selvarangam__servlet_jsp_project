@@ -29,8 +29,10 @@ public class NewProductServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		  
+        // Create a RequestDispatcher to forward the request
 		RequestDispatcher rd = request.getRequestDispatcher("/add_product.jsp");
+		 // Forward the request to the specified JSP page
 		rd.forward(request, response);
 				
 	}

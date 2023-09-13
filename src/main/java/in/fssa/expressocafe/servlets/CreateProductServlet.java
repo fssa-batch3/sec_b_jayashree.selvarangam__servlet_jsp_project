@@ -38,10 +38,11 @@ public class CreateProductServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
         ProductService productService = new ProductService();
+        // Create a PrintWriter to send responses to the client
         PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
-        
+       
         String productName = request.getParameter("name");
         String productDescription = request.getParameter("description");
         Integer categoryId = Integer.parseInt(request.getParameter("categoryId"));
@@ -83,12 +84,14 @@ public class CreateProductServlet extends HttpServlet {
         newProduct.setPriceList(priceList);
         try {
             productService.createProduct(newProduct);
+         // Redirect to a list of products on successful creation
             response.sendRedirect(request.getContextPath()+"/getProducts");
         } 
         catch (ServiceException e) {
 			e.printStackTrace();
 			out.println(e.getMessage());
 			String getError = e.getMessage();
+			 // Redirect to the "newproduct" page with an error message
 			response.sendRedirect("newproduct?error=" + getError);
 
 		} 
@@ -96,6 +99,7 @@ public class CreateProductServlet extends HttpServlet {
 			e.printStackTrace();
 			out.println(e.getMessage());
 			String getError = e.getMessage();
+			 // Redirect to the "newproduct" page with an error message
 			response.sendRedirect("newproduct?error=" + getError);
 
 		}

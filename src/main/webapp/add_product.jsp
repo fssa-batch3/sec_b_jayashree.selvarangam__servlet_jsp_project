@@ -102,18 +102,18 @@ nav {
 <body>
 <%@ include file="header_admin.jsp" %>
 
-			<%
-			String errorMessage = request.getParameter("error");
-			%>
-			<%
-			if (errorMessage != null) {
-			%>
-			<div class="error_div">
-				<p><%=errorMessage%></p>
-			</div>
-			<%
-			}
-			%>
+	<%
+	String errorMessage = request.getParameter("error");
+	%>
+	<%
+	if (errorMessage != null) {
+	%>
+	<div class="error_div">
+		<p><%=errorMessage%></p>
+	</div>
+	<%
+	}
+	%>
 <form action="createproduct" method="POST">
     <% CategoryService category = new CategoryService(); %>
     <% List<Category> cateList = category.getAllCategories(); %> 
@@ -125,16 +125,13 @@ nav {
     
     <label>Select Category</label> 
     <select name="categoryId" id="categorySelect" required>
-        <option value="">Select</option>
-        <% for(Category obj: cateList){ %>
-        <option value="<%=obj.getCategoryId() %>"><%=obj.getCategoryName() %></option>
-        <%
-        }
-        %>
+       <option value="">Select</option>
+       <% for(Category obj: cateList){ %>
+       <option value="<%=obj.getCategoryId() %>"><%=obj.getCategoryName() %></option>
+       <%
+       }
+       %>
     </select> 
-    
-    
-    
     <label for="large-price">Large Price:</label>
     <input type="number" name="large-price" required min="10" max="1000"><br><br>
     

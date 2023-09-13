@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.google.protobuf.ServiceException;
 
 import in.fssa.expressocafe.exception.PersistanceException;
 import in.fssa.expressocafe.exception.ValidationException;
+import in.fssa.expressocafe.model.ResponseEntity;
 import in.fssa.expressocafe.service.UserService;
 
 /**
@@ -48,6 +50,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		 if(("admin123@gmail.com").equals(email) &&   ("asdA123!@").equals(password) ){
+			
 			try {
 				userService.loginUser(email, password);
 				session.setAttribute("loggedUser", email);
@@ -62,7 +65,6 @@ public class LoginServlet extends HttpServlet {
 				e.printStackTrace();
 				response.sendRedirect("login.jsp?errorMessage="+e.getMessage());
 			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -76,7 +78,6 @@ public class LoginServlet extends HttpServlet {
 				String getError = e.getMessage();
 				//String errorArray[] = getError.split(":");
 				response.sendRedirect("LoginNew?error=" + getError);
-
 			} catch (ServiceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -88,3 +89,43 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 }
+/////////////////////////servlet ends /////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

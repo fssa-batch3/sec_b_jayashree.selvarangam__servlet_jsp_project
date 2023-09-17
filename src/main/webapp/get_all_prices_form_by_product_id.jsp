@@ -94,8 +94,7 @@ nav {
 </head>
 <body>
 <%@ include file="header_admin.jsp" %>
-
-<%
+		<%
 			String errorMessage = (String) request.getAttribute("ERRORDETAILS");
 			%>
 			<%

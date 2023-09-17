@@ -1,0 +1,280 @@
+:root{
+    --main-color:#443;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #b94728;
+    --bs-yellow: #ffc107;
+    --bs-green: #198754;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-gray-400: #ced4da;
+    --bs-gray-500: #adb5bd;
+    --bs-gray-600: #6c757d;
+    --bs-gray-700: #495057;
+    --bs-gray-800: #343a40;
+    --bs-gray-900: #212529;
+    --bs-primary: #0d6efd;
+    --border-radius:30% 4% ;
+    --border-radius-hover:4% 30%;
+    --border:.2rem solid var(--main-color);
+    --border-hover:.2rem dashed var(--main-color);
+}
+
+.orders-header{
+    display:grid;
+    grid-template-columns:130px 3fr 150px 150px 250px 200px 50px;
+    padding: 1rem 8%;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--bs-gray-700);
+    margin-bottom:1.5rem ;
+    color: var(--bs-orange);
+    font-size: 1.1rem;
+   }
+
+.Yourcart{
+    padding: 1rem 4%;
+    margin-bottom: 2rem;
+}
+.id_status{
+    display:flex;
+    justify-content:space-between;
+    padding: 1rem 7%;
+}
+.date_mode_cancel_review{
+    display:flex;
+    justify-content:space-between;
+    padding: 1rem 8%;
+}
+.order_id{
+    display:flex;
+    justify-content:space-between;
+}
+.mode_of_delivery{
+    display:flex;
+    justify-content:space-between;
+}
+.mode_of_delivery{
+    display:flex;
+    justify-content:space-between;
+}
+.ordered-date{
+    display:flex;
+    justify-content:space-between;
+}
+.delivery_status{
+        display:flex;
+    justify-content:space-between;
+}
+.heading-cart{
+    margin-bottom:1.5rem ;
+    color: var(--bs-orange);
+    padding: 1rem 4%;
+    margin-bottom: 2rem;
+}
+/* .beverage{
+    border-bottom: 1px solid var(--bs-gray-700);
+} */
+.beverage-container{
+    display:grid;
+    grid-template-columns:130px 3fr 150px 150px 250px 200px 50px;
+    padding-bottom:30px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.beverage-image img{
+    width:80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius:.4rem;
+}
+.beverage-content{
+    margin-top: 5px;
+}
+.whole-package{
+    display:flex;
+    justify-content: space-around;
+    width: 80vw;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-left: 10vw;
+    margin-bottom: 8vh;
+}
+.total_price1,.order_id1{
+    display: flex;
+    
+}
+.review1{
+  margin-top: 4vh;
+}
+.total_price2, .order_id2{
+    margin-right: 10px;
+    color: var(--bs-orange);
+    font-weight: 700;
+}
+.total_price3, .order_id3{
+    margin-right: 10px;
+    color: var(--bs-gray-600);
+    font-weight: 700;
+}
+
+
+.order_id123{
+    width:200px
+}
+/* .order_id123{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+} */
+
+.beverage-title{
+    margin-top:0;
+    margin-bottom:14px;
+    font-size: 1rem;
+    color: var(--bs-teal);
+}
+.beverage-message{
+    margin-top:0;
+    margin-bottom:4px;
+    font-size:0.85rem;
+    color:var(--bs-gray-600)
+}
+.cost{
+    font-size:0.95rem;
+    color:var(--bs-orange);
+    margin-top:0;
+    margin-bottom:4px;
+}
+.beverage-costdetail,.beverage-costdetail1{
+    margin-top:5px;
+}
+.delivery-status, .delivery-status1 {
+    /* color: var(--bs-gray-800); */
+    font-size: 1rem;
+    margin-top: 12px;
+    color: var(--bs-gray-600);
+}
+.beverage-costdetail a{
+    color:var(--bs-teal);
+    font-size:1rem;
+   position: relative;
+   top:19px;
+}
+.ordered-date , .mode_of_delivery{
+    color:var(--bs-gray-600);
+    font-size:1rem;
+   position: relative;
+   top:20px;
+}
+.cancel,.reorder{
+    padding-top: 7px;
+    
+}
+#cancel_1,#reorder_1 {
+    padding: 10px 8px 10px 8px;
+    font-size: 15px;
+    color: teal;
+    border: 1px solid var(--bs-orange);
+    position: relative;
+    bottom: 15px;
+    font-weight: 600;
+}
+.quantity{
+    position: relative;
+    top:20px;
+}
+
+header #toggler{
+    display: none;
+ }
+ 
+ header .fa-bars{
+     font-size: 1rem;
+     color:#333;
+     border-radius:.10rem;
+     padding:.1rem .5rem;
+     cursor: pointer;
+     border:.1rem solid rgba(0,0,0,.3);
+     display: none;
+ }
+
+@media (max-width:412px){
+    html{
+        font-size:75%;
+    }
+    
+    section{
+        padding:1rem;
+    }
+    header{
+        padding:.1rem;
+    }
+    header .fa-bars{
+        display : inline-block;
+    }
+    header .navbar{
+        position:absolute; 
+        top:100%; 
+        left:0; 
+        right:0; 
+        background:#eee; 
+        border-top: .1rem solid rgba(0,0,0,.1); 
+        clip-path:polygon(0 0, 0 0, 0 0, 0 0); 
+    }
+
+    header #toggler:checked ~ .navbar{
+        clip-path:polygon(0 0, 100% 0, 100% 100%, 0% 100%); 
+    }
+
+    header .navbar a{
+        margin:1.5rem; 
+        padding:1.5rem; 
+        display:block; 
+    }
+    .beverage{
+        width: 100%; 
+    }
+    .beverage-container{
+        display:grid; 
+        grid-template-columns:50px 1fr 1.5fr .5fr; 
+        font-size: 1rem; 
+        column-gap: 1rem; 
+    }
+    .beverage-image img{
+        width:40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius:.4rem;
+        position: relative;
+        right:30px ;
+    }
+  
+    .beverage-message{
+        display: none;
+    }
+    /* .ordered-date{
+        display: none;
+    }
+    .Ordered-date{
+        display: none;
+    } */
+    .quantity{
+        display: none;
+    }
+    .Quantity{
+        display: none;
+    }
+    .orders-header{
+        display:grid;
+        grid-template-columns:50px 1.2fr  1.5fr .5fr;
+        column-gap: 1rem;
+        font-size: 1rem;
+        padding: 1rem 4%;
+    }
+    .Yourcart{
+        padding: 1rem .1%;
+        margin-bottom: 2rem;
+    }
+}
+
+

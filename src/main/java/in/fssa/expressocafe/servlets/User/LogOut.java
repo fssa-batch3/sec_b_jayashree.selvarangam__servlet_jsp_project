@@ -32,7 +32,8 @@ public class LogOut extends HttpServlet {
 		HttpSession session = request.getSession();
 		String attributeName = "loggedUser";
 		session.removeAttribute(attributeName);
+		session.invalidate();
 
-		response.sendRedirect(request.getContextPath() + "/LoginNew");
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
 	}
 }

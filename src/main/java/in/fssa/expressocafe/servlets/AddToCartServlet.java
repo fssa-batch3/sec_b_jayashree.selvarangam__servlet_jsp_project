@@ -38,11 +38,8 @@ public class AddToCartServlet extends HttpServlet {
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			/* response.setContentType("text/html;charset=UTF-8"); */
 				
-				if(request.getParameter("product_id")==null&&request.getParameter("size_id")==null&&request.getParameter("category_id")==null) {
-					
-					
-					
-					
+				if(request.getParameter("product_id")==null&&request.getParameter("size_id")==null) {
+	
 		            RequestDispatcher re = request.getRequestDispatcher("/addtocartview.jsp");
 		            re.forward(request, response);
 				}
@@ -53,7 +50,7 @@ public class AddToCartServlet extends HttpServlet {
 	            List<Cart> cartList = new ArrayList<>();
 	            int id = Integer.parseInt(request.getParameter("product_id"));
 	            int sizeId = Integer.parseInt(request.getParameter("size_id"));
-	            int cateId = Integer.parseInt(request.getParameter("category_id"));
+//	            int cateId = Integer.parseInt(request.getParameter("category_id"));
 	             String auth = (String) request.getSession().getAttribute("loggedUser");
 	             ProductService prod = new ProductService();
 	             Product pro = new Product();
@@ -72,18 +69,15 @@ public class AddToCartServlet extends HttpServlet {
 	         	price1.setPrice(pro.getPrice());
 	         	price1.setPriceId(pro.getPriceObj().getPriceId());
 	             
-	         	Category catego = new Category();
-	         	catego.setCategoryId(cateId);
+//	         	Category catego = new Category();
+//	         	catego.setCategoryId(cateId);
 	            Cart cm = new Cart();
 	            cm.setProduct_id(id);
-	            cm.setCategory(catego);
+//	            cm.setCategory(catego);
 	            cm.setSizeId(sizeId);
 	            cm.setName(pro.getName());
-	            
 	            cm.setPrice(pro.getPriceObj().getPrice());
-	            
 	            cm.setPriceObj(price1);
-	           
 	            cm.setSizeName(s.getSizeName());
 	            cm.setQuantity(1);
 	            cm.setEmail(auth);
@@ -107,7 +101,7 @@ public class AddToCartServlet extends HttpServlet {
 	                }
 	                if (!exist) {
 	                    cartList.add(cm);
-	                    System.out.println(cartList);
+	                 //   System.out.println(cartList);
 	                  
 						/* response.sendRedirect("index.jsp"); */
 	                }

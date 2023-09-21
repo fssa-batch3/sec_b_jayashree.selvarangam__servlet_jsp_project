@@ -7,14 +7,15 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>List all products</title>
   <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>coffee shop </title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
- 
+   <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Merienda:wght@300;400;500;600&family=Montserrat:wght@400;500&family=Poppins:ital,wght@0,100;0,300;0,400;1,100;1,200;1,300;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		 <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/order-drink.css">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
         <style>
 
 	
@@ -456,6 +457,13 @@ grid-template-columns: 1fr 1fr 1fr;
     font-weight: 500;
 
 }
+#truncate-text {
+    white-space: nowrap;      /* Prevent text from wrapping to the next line */
+    overflow: hidden;         /* Hide any overflowing content */
+    text-overflow: ellipsis;  /* Display an ellipsis (...) when the text overflows */
+    max-width: 300px;         /* Adjust the maximum width as needed */
+}
+
 
 .beverage-container{
     margin-top: 0;
@@ -704,14 +712,16 @@ header #toggler{
            <div class="product">
             <div class="bestsellers">
                 <div class="bestsellers-image">
-              <a href="#"> <img src="" alt=""></a>
+              <a href="#"> <img src="https://iili.io/J97xOru.jpg" alt=""></a>
+              
             </div>
                <div class="bestsellers-p">ENJOY YOUR COFFEE</div>
             </div>
             <div class="drinks"> 
                
                 <div class="drinks-image">
-                    <a href="#">    <img src="" alt=""></a>
+                    <a href="#">    <img src="https://iili.io/J97zE6F.jpg" alt=""></a>
+                    
                  </div>
               <div class="drinks-p">ENJOY YOUR DAY</div>
             </div>
@@ -737,7 +747,7 @@ header #toggler{
             
                 <div class="beverage-img-content-cost">
                 <div class="beverage-image">
-                    <img src="" alt="">
+                    <img src="https://iili.io/J97on94.jpg" alt="">
                 </div>
                 <div class="beverage-content-cost">
                 <div class="beverage-content">
@@ -746,7 +756,7 @@ header #toggler{
                     </div>
                     <div class="beverage-title"><h3> <%=  product.getName()    %></h3></div>
                     
-                    <div class="beverage-message-2"><p> <%=  product.getDescription()   %> </p></div>
+                    <div class="beverage-message-2" id="truncate-text"><p> <%=  product.getDescription()   %> </p></div>
                 </div>
                 <div class="beverage-costdetail">
                 

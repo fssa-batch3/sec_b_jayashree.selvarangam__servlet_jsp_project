@@ -57,15 +57,16 @@ public class PlaceOrderServlet extends HttpServlet {
 			orderService.CreateOrder(cart_list,user.getId() , 2 ,orderCost);
 			
 			
+			session.removeAttribute("cart_list");
+			session.removeAttribute("total");
+			
 		}catch (ServiceException e) {
 			e.printStackTrace();	
 		}catch (ValidationException | com.google.protobuf.ServiceException e) {
 			e.printStackTrace();
 		}
-		
 		RequestDispatcher rd = request.getRequestDispatcher("/get_all_order");
-		rd.forward(request, response);
-		
+		rd.forward(request, response);	
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

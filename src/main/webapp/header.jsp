@@ -47,12 +47,12 @@
     <div class="dropdown">
     <a href="list_of_products" class="nav">  <span>Order</span>  </a>
      <div class="dropdown-content">
-   	 <% CategoryService category = new CategoryService(); %>
+	 <% CategoryService category = new CategoryService(); %>
    	  <% List<Category> cateList = category.getAllCategories(); %>
    	    	<% for(Category cate : cateList){ %>
    	    	
    	  <a href="list_of_products?cate_id=<%= cate.getCategoryId() %>"><%= cate.getCategoryName() %></a>
-<% } %> 
+<% } %>  
     </div> 
   	</div> 
     <a href="blog.jsp">Blogs</a>
@@ -90,7 +90,7 @@
 <% } %> 
     </div>
   	</div> 
-    <a href="#">My orders</a>
+    <a href="<%= request.getContextPath() %>/get_all_order">My orders</a>
   
     <a href="blog.jsp">Blogs</a>
 </nav>
@@ -104,8 +104,8 @@
 <a href="#" class="fas fa-user"></a>
 <div class="dropdown-content1">
    <a href="#">profile</a>
-   <a href="#">Address profile</a>
-   <a href="#">Add address</a>
+   <a href="">Address profile</a>
+   <a href="<%= request.getContextPath() %>/add_address">Add address</a>
     </div>
 </div>
  <a href="user/logout">Logout</a>

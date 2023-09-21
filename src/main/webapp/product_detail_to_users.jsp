@@ -65,7 +65,7 @@
                 </div>
                 <div class="add-item-cart">
                 <% if (session.getAttribute("loggedUser") != null) { %>
-                <a id="addToCartLink" href="<%= request.getContextPath() %>/add_to_cart_servlet?product_id=<%= product.getProduct_id()%>&category_id=<%= product.getCategory().getCategoryId() %>&size_id=2"><button class="btn-button">Add to the cart</button></a>
+                <a id="addToCartLink" href="<%= request.getContextPath() %>/add_to_cart_servlet?product_id=<%= product.getProduct_id()%>&size_id=2"><button class="btn-button">Add to the cart</button></a>
             	<% } else{%>
             	 <a id="addToCartLink" onclick="addToCart()"><button class="btn-button">Add to Cart</button></a>
             	<%} %>
@@ -103,7 +103,7 @@
 
                     // Update the href of the add to cart link with the selected size_id
                     var addToCartLink = document.getElementById("addToCartLink");
-                    addToCartLink.href = "<%= request.getContextPath() %>/add_to_cart_servlet?product_id=<%= product.getProduct_id()%>&category_id=<%= product.getCategory().getCategoryId()%>&size_id=" + sizeId;
+                    addToCartLink.href = "<%= request.getContextPath() %>/add_to_cart_servlet?product_id=<%= product.getProduct_id()%>&size_id=" + sizeId;
 
                     break;
                 }

@@ -122,7 +122,6 @@ font-family: 'Quicksand', sans-serif;
                     <video src="./assets/image/video.mp4  " loop autoplay muted></video>
                     <h3>ENJOY YOUR COFFEE</h3>
                 </div>
-
                 <div class="content">
                     <h3>Why choose us?</h3>
                     <p>
@@ -135,12 +134,11 @@ font-family: 'Quicksand', sans-serif;
                          
 
 </p>
-<p>
-                        
-              We are excited to be part of your daily coffee ritual and to share our love for exceptional coffee with you. Order now and elevate your coffee experience with Expresso Cafe.
-                   
+<p>          
+                    We are excited to be part of your daily coffee ritual and to share our love for exceptional coffee with you. Order now and elevate your coffee experience with Expresso Cafe.
+             
                     </p>
-           
+       
                 </div>
 
             </div>

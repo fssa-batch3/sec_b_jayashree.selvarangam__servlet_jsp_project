@@ -1,0 +1,122 @@
+:root{
+    --main-color:#443;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #b94728;
+    --bs-yellow: #ffc107;
+    --bs-green: #198754;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-gray-400: #ced4da;
+    --bs-gray-500: #adb5bd;
+    --bs-gray-600: #6c757d;
+    --bs-gray-700: #495057;
+    --bs-gray-800: #343a40;
+    --bs-gray-900: #212529;
+    --bs-primary: #0d6efd;
+    --border-radius:30% 4% ;
+    --border-radius-hover:4% 30%;
+    --border:.2rem solid var(--main-color);
+    --border-hover:.2rem dashed var(--main-color);
+}
+body{
+    background: url('../../assets/image/bgcoffee2.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+.container{
+    padding-top: 270px;
+    padding-left: 50px;
+    font-size: 3.5rem;
+    color:white;
+}
+.pay{
+    width: 100%;
+    background-color: var(--bs-teal);
+    height:80px;
+    padding:15px 50px;
+    color:white;
+    font-size: 1.4rem;
+    position: relative;
+    top:150px;
+}
+
+.pay-container{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+ 
+   
+    
+}
+.button-value button{
+    padding:15px  20px 15px 20px;
+    font-size: 17px;
+    color:var(--bs-gray-600);
+    border-radius: 30px;
+}
+.pay-title{
+    margin-top: 15px;
+}
+.pay-container span{
+    margin-left: 9px;
+}
+header #toggler{
+    display: none;
+ }
+ 
+ header .fa-bars{
+     font-size: 1rem;
+     color:#333;
+     border-radius: .10rem;
+     padding:.1rem .5rem;
+     cursor: pointer;
+     border:.1rem solid rgba(0,0,0,.3);
+     display: none;
+ }
+
+@media (max-width:412px){
+    html{
+        font-size:95%;
+    }
+    
+    section{
+        padding:1rem;
+    }
+    header{
+        padding:.1rem;
+    }
+    header .fa-bars{
+        display: inline-block;
+    }
+    header .navbar{
+        position:absolute;
+        top:100%; left:0; right:0;
+        background:#eee;
+        border-top: .1rem solid rgba(0,0,0,.1);
+        clip-path:polygon(0 0, 0 0, 0 0, 0 0);
+    }
+
+    header #toggler:checked ~ .navbar{
+        clip-path:polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    header .navbar a{
+        margin:1.5rem;
+        padding:1.5rem;
+        display:block;
+    }
+    .btn{
+        font-size:1rem;
+        padding:1rem;
+        margin:.1rem .1rem;
+     }
+    .button-value button{
+        padding:10px  12px 10px 12px;
+        font-size: 17px;
+    }
+    .content{
+        font-size: 2rem;
+    }
+}

@@ -32,7 +32,9 @@ font-family: 'Quicksand', sans-serif;
     </head>
     <body>
 	<%@ include file="header.jsp" %>
+	
 	<%  List<Cart> cartList = (List<Cart>) session.getAttribute("cart_list"); %>
+	<% if(cartList != null){ %>
 	<%double total =0; %>
 	<%
 	DecimalFormat dcf = new DecimalFormat("#.##");
@@ -181,7 +183,7 @@ font-family: 'Quicksand', sans-serif;
                             <input type="radio" class='e' id="1" name="delivery_type" value="takeaway">
                         </div>
                         <div class="name">
-                            <label for="1">Delivery</label>
+                            <label for="1">Starry night</label>
                         </div>
 
                     </div>
@@ -190,7 +192,7 @@ font-family: 'Quicksand', sans-serif;
                             <input type="radio" id="2" class='e' name="delivery_type" value="dine_in">
                         </div>
                         <div class="name">
-                            <label for="2">Take away</label>
+                            <label for="2">Van Gogh's Palette</label>
                         </div>
                     </div>
                     <div class="choices">
@@ -198,7 +200,7 @@ font-family: 'Quicksand', sans-serif;
                             <input type="radio" id="3" class='e' name="delivery_type" value="delivery">
                         </div>
                         <div class="name">
-                            <label for="3">dine in</label>
+                            <label for="3">Cafe Under the Stars</label>
                         </div>
                     </div>
                 </div>
@@ -209,9 +211,10 @@ font-family: 'Quicksand', sans-serif;
             <div class="address">
                 <div class="delivery-details">
                     <div class="delivery-name">
-                        Delivery to <span class="name" id="del-name"></span>
+                        Delivery to <span class="name" id="del-name">Jane</span>
                     </div>
                     <div class="delivery-address" id="del-address"></div>
+                    No 4 , adhisankaran st , maha nagar , kanchipuram
                 </div>
     
                 <div class="change-address">
@@ -233,7 +236,7 @@ font-family: 'Quicksand', sans-serif;
                         </div>
                         <div class="amount" id="amount">
                     
-                 		<p>Rs.<%= total %></p>
+                 		<p>Rs. <%= String.format("%.2f", total) %> </p>
                         </div>
                     </div>
                     <!-- <div class="bill-details">
@@ -265,7 +268,7 @@ font-family: 'Quicksand', sans-serif;
                             Grand Total
                         </div>
                         <div class="amount" id="total_items">
-                 		<p>Rs.<%= total %> </p>
+                 		<p>Rs. <%= String.format("%.2f", total) %> </p>
                         </div>
                     </div>
 
@@ -277,17 +280,21 @@ font-family: 'Quicksand', sans-serif;
             <div class="pay-container">
                 <div class="pay-title">
                     <i class="fa-solid fa-circle-exclamation"></i>
-                    <span>Cash on delivery only & cancellation only within 5 minutes</span>
+                    <span>Cash on delivery only </span>
                 </div>
                 <div class="button-value">
                     <!-- <a href="../../pages/My orders/myorders.html"> -->
-                  <a href="<%=request.getContextPath()%>/place_order" id="btn_order1"> <button id="btn_order">Place your order</button></a> 
+                  <a href="" id="btn_order1"> <button id="btn_order">Place your order</button></a> 
                     <!-- <button id="btn_order" onclick="radio()">Summa oru Button</button> -->
                     <!-- </a> -->
                 </div>
             </div>
 
         </section>
+        <%}else{ %>
+         <h2 class="heading-cart">Your cart</h2>
+        <h3 class="heading-cart"> ADD PRODUCT IN THE CART  </h3>
+        <%} %>
     </body>
 <script>
     // Get references to the button and anchor
@@ -308,17 +315,17 @@ font-family: 'Quicksand', sans-serif;
 
         // If no radio button is selected, show an alert
         if (selectedValue === null) {
-            alert('Please select a delivery option.');
+            alert('Please select a packaging option.');
         } else {
             // Set the href attribute of the anchor element
             console.log(selectedValue);
-            const orderLinkHref = <%=request.getContextPath()%>"/place_order";
-            	/* 	delivery_type="+selectedValue; */
+            const orderLinkHref = '<%=request.getContextPath()%>/place_order?packaging_type=' + selectedValue;
+
             
             orderLink.href = orderLinkHref;
             console.log(selectedValue);
             console.log(orderLinkHref);
-            alert('Successfully selected a delivery option.');
+            alert('Successfully selected a packaging option.');
         }
     });
 </script>

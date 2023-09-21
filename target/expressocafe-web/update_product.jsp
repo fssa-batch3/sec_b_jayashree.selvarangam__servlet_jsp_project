@@ -8,9 +8,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>update product</title>
 <style>
-    body {
+/*     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
         display: flex;
@@ -18,7 +18,7 @@
         align-items: center;
         height: 100vh;
         margin: 0;
-    }
+    } */
 
     form {
         width: 40%; /* Reduce the width to 40% */
@@ -61,14 +61,71 @@
     button[type="submit"]:hover {
         background-color: #0056b3;
     }
+    /* Reset default styles */
+body, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+/* Logo styles */
+.logo img {
+    width: 100px; /* Adjust the logo size as needed */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Center the logo horizontally */
+}
+
+/* Navigation styles */
+nav {
+    text-align: center;
+}
+
+.nav-links li {
+    display: inline-block;
+    margin-right: 20px; /* Adjust the spacing between navigation links */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ff6600; /* Change the link color on hover */
+}
+    
 </style>
-
-
 </head>
 <body>
-<body>
+
+<%@ include file="header_admin.jsp" %>
+
+
+<%
+			String errorMessage = (String) request.getAttribute("ERRORDETAILS");
+			%>
+			<%
+			if (errorMessage != null) {
+			%>
+			<div class="error_div">
+				<p><%=errorMessage%></p>
+			</div>
+			<%
+			}
+			%>
 <%  Product product = (Product) request.getAttribute("product");   %>
-	<form action="update" method="post">
+	<form action="updateproduct" method="post">
 		<% CategoryService category = new CategoryService(); %>
    	  	<% List<Category> cateList = category.getAllCategories(); %>
 		<input type="hidden" name="id" value="<%= product.getProduct_id() %>" />
@@ -79,17 +136,18 @@
 		<textarea  name="description" rows="4" required><%=  product.getDescription() %></textarea>
 		<br>
 		<label>Select Category</label> 
+		<% int status = product.getCategory().getCategoryId();%>
 		<select name="categoryId" id="categorySelect" required>
 			<option value="">Select</option>
 			<% for(Category obj: cateList){ %>
-			<option value="<%=obj.getCategoryId() %>"><%=obj.getCategoryName() %></option>
+			<option value="<%=obj.getCategoryId() %>"  <% if (status != 0 && status==(obj.getCategoryId())) { %>selected<% } %>><%=obj.getCategoryName() %></option>
 			<%
 			}
 			%>
 		</select> 
-		
+	
 		<button type="submit">Submit</button>
 	</form>
-</body>
+
 </body>
 </html>

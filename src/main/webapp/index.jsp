@@ -33,7 +33,7 @@ font-family: 'Quicksand', sans-serif;
     </head>
     <body>
     		<jsp:include page="/header.jsp"></jsp:include>
-        <!-- <header class="header">
+      <!-- <header class="header">
             <input type="checkbox" name="" id="toggler">
             <label for="toggler" class="fas fa-bars"></label>
             <a href="../coffeeshop/index.html" class="logo"> Coffee <i class="fas fa-mug-hot"></i> </a>

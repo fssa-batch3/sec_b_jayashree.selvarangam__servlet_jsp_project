@@ -2,6 +2,7 @@ package in.fssa.expressocafe.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -41,38 +42,69 @@ public class PlaceOrderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("in post ");
-		
 		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
-		List<Cart> cart_list = (List<Cart>) session.getAttribute("cart_list");
+		List<Cart> cartList = (List<Cart>) session.getAttribute("cart_list");
 		String email = (String)session.getAttribute("loggedUser");
-		double orderCost = (double) session.getAttribute("total");
+		double orderCost = (double) request.getAttribute("orderCost");
+		int addressId = (int) request.getAttribute("addressId");
+		String package_type =  (String) request.getAttribute("selectedValue");
+		System.out.print(package_type);
+		
 		UserService userService = new UserService();
 		User user = null ;
 		try {
 			user = userService.findByEmail(email);
 			OrderService orderService = new OrderService();
-			orderService.CreateOrder(cart_list,user.getId() , 2 ,orderCost);
-			
-			
-			session.removeAttribute("cart_list");
+			// change address
+			orderService.CreateOrder(cartList,user.getId() , addressId ,orderCost,package_type);
+			  List<Cart> itemsToRemove = new ArrayList<>();
+	            for (Cart cartItem : cartList) {
+	               itemsToRemove.add(cartItem);  
+	            }
+	            // Remove the ordered items from the cart
+	        cartList.removeAll(itemsToRemove);
 			session.removeAttribute("total");
-			
+			session.removeAttribute("address_id");
 		}catch (ServiceException e) {
-			e.printStackTrace();	
-		}catch (ValidationException | com.google.protobuf.ServiceException e) {
+		
+			  e.printStackTrace();
+			    String getError = e.getMessage();
+			    request.setAttribute("errorMessage", getError);
+			    // Redirect to the addtocartview.jsp with an error message
+			    response.sendRedirect(request.getContextPath() + "/addtocartview.jsp?error=" + getError);
+			
+		}catch (ValidationException e) {
 			e.printStackTrace();
+			String getError = e.getMessage();
+		    request.setAttribute("errorMessage", getError);
+		    // Redirect to the addtocartview.jsp with an error message
+		    response.sendRedirect(request.getContextPath() + "/addtocartview.jsp?error=" + getError);
 		}
+		 catch( com.google.protobuf.ServiceException e) {
+				e.printStackTrace();
+				String getError = e.getMessage();
+			    
+			    // Redirect to the addtocartview.jsp with an error message
+			    response.sendRedirect(request.getContextPath() + "/addtocartview.jsp?error=" + getError);
+			}
 		RequestDispatcher rd = request.getRequestDispatcher("/get_all_order");
 		rd.forward(request, response);	
-	}
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
 		
 	}
 	
 
+
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // Get values from URL parameters
+    double orderCost = Double.parseDouble(request.getParameter("total"));
+    int addressId = Integer.parseInt(request.getParameter("address_id"));
+    String selectedValue = request.getParameter("selected_value");
+    // Set values in request attributes
+    request.setAttribute("orderCost", orderCost);
+    request.setAttribute("addressId", addressId);
+    request.setAttribute("selectedValue", selectedValue);
+	doPost(request,response);
+	}
 }

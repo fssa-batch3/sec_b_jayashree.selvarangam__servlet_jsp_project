@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="./assets/css/style.css ">
         <link rel="stylesheet" href="./assets/css/header.css ">
         <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
-        <script src="./main.js"></script>
+        
         <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Merienda:wght@300;400;500;600&family=Montserrat:wght@400;500&family=Poppins:ital,wght@0,100;0,300;0,400;1,100;1,200;1,300;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
@@ -90,6 +90,7 @@ font-family: 'Quicksand', sans-serif;
                         <div class="coffee-image"><img src="<%= request.getContextPath() %>/assets/image/javachip.jpg" width="80px" height="80px" alt=""></div>
                         <div class="coffee-content">
                         <div class="coffee-title"><%= product.getName() %></div>
+                         <div class=" coffee-message">Medium (350ml) 290 kcal</div>
                        <!--  <div class=" coffee-message">Tall(394ml)392kcal</div> -->
                         </div>
                         </div>
@@ -111,11 +112,9 @@ font-family: 'Quicksand', sans-serif;
         </section>
 
         <section class="about" id="about">
-
             <h1 class="heading">
                 <span>ABOUT US </span> 
             </h1>
-
             <div class="row">
 
                 <div class="video-container">
@@ -129,53 +128,17 @@ font-family: 'Quicksand', sans-serif;
                          We are a team of passionate coffee enthusiasts dedicated to delivering an exceptional 
                          coffee experience right to your home or office.
                           Our skilled baristas are trained to craft each cup of coffee with care, ensuring that
-                          every sip is a delightful moment of indulgence. 
-
-                         
-
+                          every sip is a delightful moment of indulgence.                    
 </p>
 <p>          
-                    We are excited to be part of your daily coffee ritual and to share our love for exceptional coffee with you. Order now and elevate your coffee experience with Expresso Cafe.
-             
-                    </p>
+ We are excited to be part of your daily coffee ritual and to share our love for exceptional coffee with you. Order now and elevate your coffee experience with Expresso Cafe.</p>
        
                 </div>
 
             </div>
 
         </section>
-        <!-- <section class="footer">
 
-            <div class="box-container">
-
-            <div class="box">
-            <h3>our branches</h3>
-            <a href="#"> <i class="fas fa-arrow-right"></i> India </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> USA </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> France </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Africa </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Japan </a>
-            </div>
-
-            <div class="box">
-            <h3>quick links</h3>
-            <a href="./pages/productdetail/product-cappu.html"> <i class="fas fa-arrow-right"></i> home </a>
-            <a href="./pages/order/order-bestseller.html"> <i class="fas fa-arrow-right"></i> order </a>
-            <a href="./pages/payment/payment.html"> <i class="fas fa-arrow-right"></i> pay </a>
-            <a href="./pages/My orders/myorders.html"> <i class="fas fa-arrow-right"></i> my orders </a>
-            <a href="./pages/blogs.html"> <i class="fas fa-arrow-right"></i> blog </a> -->
-        <!-- </div>
-            <div class="box">
-            <h3>contact info</h3>
-            <a href="#"> <i class="fab fa-facebook-f"></i> facebook </a>
-            <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
-            <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
-            <a href="#"> <i class="fab fa-instagram"></i> instagram </a>
-            <a href="#"> <i class="fab fa-linkedin"></i> linkedin </a>
-            </div>
-
-            </div> -->
-        <!-- </section> -->
     </body>
     <!-- <script src="./main.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script> -->
@@ -184,5 +147,101 @@ font-family: 'Quicksand', sans-serif;
 
     <script src="./pages/order/header.js"></script>
     <script src="./components/footer.js"></script>
+<%-- <script src="<%=request.getContextPath()%>/assets/js/search.js"> </script> --%>
+<script>
+let allProductsDetails = [];
+async function getAllProducts() {
+    try {
+        const response = await fetch("http://localhost:8080/expressocafe-web/AllProdServlet", {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP error! Status: "+ response.status);
+        }
+
+        const responseData = await response.json();
+
+        // Access the array of products from the 'data' property
+        allProductsDetails = responseData.data;
+		console.log("allProductsDetails",allProductsDetails);
+        // Call a function to process or display the data
+        getAllProductsDetails(allProductsDetails);
+    } catch (error) {
+        console.error("Error fetching product data:", error);
+    }
+}
+
+//Call the function to fetch product data
+getAllProducts();
+const rootPath = window.location.origin;
+// function to process or display the data
+
+function getAllProductsDetails(allProducts) {
+
+//Assuming you have these variables defined elsewhere in your code
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+//Function to process or display the data fetched from the database
+function getAllProductsDetails(allProducts) {
+// Add an event listener to the search input
+searchInput.addEventListener('input', function() {
+const searchQuery = this.value.trim();
+
+// Clear previous search results
+searchResults.innerHTML = '';
+
+if (searchQuery !== '') {
+  const results = getMatchingResults(searchQuery, allProducts);
+  displayResults(results);
+
+  if (results.length === 0) {
+    displayNoResultsMessage(); // Display 'No results found' message
+  }
+} else {
+  // Input field is empty, do not display 'No results found' message
+}
+});
+}
+
+//Function to get matching results from the fetched data
+function getMatchingResults(query, allProducts) {
+return allProducts.filter(function(product) {
+return product.name.toLowerCase().includes(query.toLowerCase());
+});
+}
+
+//Function to display search results
+function displayResults(results) {
+results.forEach(function(result) {
+const listItem = document.createElement('li');
+const listItem1 = document.createElement('a');
+
+// Assuming you have a product detail URL in your data
+const uuid = result.product_id;
+listItem1.setAttribute('href', "http://localhost:8080/expressocafe-web/product_detail?product_id="+uuid);
+listItem1.textContent = result.name;
+listItem.appendChild(listItem1);
+
+searchResults.appendChild(listItem);
+});
+}
+
+//Function to display 'No results found' message
+function displayNoResultsMessage() {
+const noResultsMessage = document.createElement('li');
+noResultsMessage.textContent = 'No results found.';
+searchResults.appendChild(noResultsMessage);
+}
+
+//...
+
+//Call a function to process or display the data
+getAllProductsDetails(allProductsDetails);
+}
+ 
+</script>
+
 
 </html>

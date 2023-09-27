@@ -3,6 +3,7 @@ package in.fssa.expressocafe.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,17 +38,22 @@ public class UpdateProfileServlet extends HttpServlet {
 
 		user.setFirstName(request.getParameter("firstName"));
 		user.setLastName(request.getParameter("lastName"));
-		user.setEmail(request.getParameter("email"));
-		user.setPassword(request.getParameter("password"));
+	
 		user.setPhoneNo(Long.parseLong(request.getParameter("phoneNumber")));
 
 		UserService userService = new UserService();
-
+		User user1 = null;
 		try {
 			userService.updateUser(userId, user);
+			 user1 = userService.findByUserId(userId);
 			response.sendRedirect(request.getContextPath() + "/get_profile");
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
+			request.setAttribute("user", user1);
+			request.setAttribute("error", e.getMessage());
+			RequestDispatcher rd = request.getRequestDispatcher("/edit_profile.jsp");
+			rd.forward(request, response);
+			
 		}
 	}
 

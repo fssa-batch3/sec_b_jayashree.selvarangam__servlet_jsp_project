@@ -26,7 +26,7 @@ public class ListProductDetail extends HttpServlet {
        
     /**
      * @see HttpServlet#HttpServlet()
-     */
+     */ 
     public ListProductDetail() {
         super();
         // TODO Auto-generated constructor stub

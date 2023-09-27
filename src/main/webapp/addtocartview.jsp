@@ -1,3 +1,7 @@
+<%@page import="in.fssa.expressocafe.model.User"%>
+<%@page import="in.fssa.expressocafe.service.UserService"%>
+<%@page import="in.fssa.expressocafe.service.DeliverAddressService"%>
+<%@page import="in.fssa.expressocafe.model.DeliveryAddresses"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="in.fssa.expressocafe.model.Cart"%>
 <%@page import="in.fssa.expressocafe.model.Price"%>
@@ -22,20 +26,30 @@
         <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/footer.css ">
         <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Merienda:wght@300;400;500;600&family=Montserrat:wght@400;500&family=Poppins:ital,wght@0,100;0,300;0,400;1,100;1,200;1,300;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
-          * { font-family: 'Aclonica', sans-serif;
-font-family: 'Merienda', cursive;
-font-family: 'Montserrat', sans-serif;
-font-family: 'Poppins', sans-serif;
-font-family: 'Quicksand', sans-serif;
+          * {  	font-family: 'Aclonica', sans-serif;
+				font-family: 'Merienda', cursive;
+				font-family: 'Montserrat', sans-serif;
+				font-family: 'Poppins', sans-serif;
+				font-family: 'Quicksand', sans-serif;
         }
         </style>
+        
     </head>
     <body>
 	<%@ include file="header.jsp" %>
+<%-- 	 	<% String cartAlert = (String) request.getAttribute("cartAlert"); %>
+ 
+<% if (cartAlert != null ) { %>
+    <script>
+        alert('<%= cartAlert %>');
+      
+    </script>
+<% } %> --%>
 	
-	<%  List<Cart> cartList = (List<Cart>) session.getAttribute("cart_list"); %>
-	<% if(cartList != null){ %>
-	<%double total =0; %>
+	<%  List<Cart> cartList = (List<Cart>) session.getAttribute("cart_list");
+	if(cartList != null && !cartList.isEmpty()  ){ 
+		
+	double total = 0; %>
 	<%
 	DecimalFormat dcf = new DecimalFormat("#.##");
 	request.setAttribute("dcf", dcf);
@@ -50,32 +64,44 @@ font-family: 'Quicksand', sans-serif;
              cart.setTotalPrice(total);
          }
 		request.setAttribute("total", total);
-		session.setAttribute("total", total);
 		request.setAttribute("cart_list", cart_list);
 	}
+	
+	  DeliveryAddresses delivery = new DeliveryAddresses(); 
+     String loggedUserUniqueEmail = (String) request.getSession().getAttribute("loggedUser");
+	
+ 	 UserService  user = new UserService();
+ 	 User u = null; 
+ 	 u = user.findByEmail(loggedUserUniqueEmail); 
+     delivery = new DeliverAddressService().getAddressByUserIdAndStatus(u.getId(), 1); 
+     if(delivery!=null){
+	 session.setAttribute("address_id",delivery.getAddressId() );
+	}
+	
 	%>
-        <!-- <header class="header">
-            <input type="checkbox" name="" id="toggler">
-            <label for="toggler" class="fas fa-bars"></label>
-            <a href="../../index.html" class="logo"> Coffee<i class="fas fa-mug-hot"></i> </a>
-        
-            <nav class="navbar">
-            <a href="../../index.html">Home</a>
-            <a href="../../pages/order/order-bestseller.html">Order</a>
-            <a href="../../pages/payment/payment.html">Pay</a>
-            <a href="../../pages/My orders/myorders.html">My orders</a>
-            <a href="../../pages/blogs/blog.html">Blogs</a>--> 
-        <!-- </nav>
-            <div class="icons">
-            <a href="../../pages/add to cart/addtocart.html" class="fas fa-shopping-cart"></a>
-            <a href="../../pages/profile/profile.html" class="fas fa-user"></a>
-            </div>
-            <a href="../../pages/login/login.html" class="btn">Login</a>
-        
-            </header> -->
+
         <h2 class="heading-cart">Your cart</h2>
-        <h3 class="heading-cart"> MOBILE ORDER AND PAY  </h3>
+        <h3 class="heading-cart">  ORDER AND ENJOY  </h3>
+       
+
        <section class="whole">
+        	<div>
+					<%
+					String err = request.getParameter("error");
+					%>
+					<%
+					if (err != null) {
+					%>
+					<div class="error_div">
+						<p><%=err%></p>
+					</div>
+					<%
+					}
+					%>
+					
+					<%  %>
+					
+				</div>
         <% for (Cart cart: cartList) { %>
         <section class="Yourcart"> 
             <div class="beverage">
@@ -85,9 +111,16 @@ font-family: 'Quicksand', sans-serif;
                     </div>
                     <div class="beverage-content">
                         <div class="beverage-vegimg">
-                            <img src="../../assets/image/veg.svg" alt="">
+                             <img src="<%= request.getContextPath() %>/assets/image/veg.svg" alt="">
                         </div>
                         <div class="beverage-title"> <%= cart.getName() %> </div>
+                        <% if(cart.getSizeId()==1){ %>
+                         <div class=" beverage-message">Tall(354 ML) .398 kcal</div>
+                         <%}else if(cart.getSizeId()==2){ %>
+                         <div class=" beverage-message">Medium(354 ML) .398 kcal</div>
+                         <%}else{ %>
+                            <div class=" beverage-message">Short(354 ML) .398 kcal</div>
+                         <%} %>
                     </div>
                     <div class="inc-dec-button">
                         <div>
@@ -109,8 +142,7 @@ font-family: 'Quicksand', sans-serif;
                       <% double o = cart.getPrice() * cart.getQuantity(); %>
                        
 					  <div class="cost">Rs.<%= String.format("%.2f", o) %></div>
-
-                     <!--    <div class="Goback"><a href="#">Go back</a></div> -->
+					 <!--    <div class="Goback"><a href="#">Go back</a></div> -->
                         <a href="<%= request.getContextPath() %>/remove-from-cart?product_id=<%=cart.getProduct_id() %>&size_id=<%= cart.getSizeId()%>">
 
                         <button class="Go_back" >remove</button>
@@ -122,8 +154,7 @@ font-family: 'Quicksand', sans-serif;
         </section>
         <% } %>
     </section> 
-        
-        <!-- <p class="add-items">
+         <!-- <p class="add-items">
             <i class="fa-solid fa-plus"></i>
             <a href="../../pages/order/order-drinks.html"> Add more items</a>
         </p> -->
@@ -154,7 +185,8 @@ font-family: 'Quicksand', sans-serif;
                         <div class="coffee-image"><img src="<%= request.getContextPath() %>/assets/image/javachip.jpg" width="80px" height="80px" alt=""></div>
                         <div class="coffee-content">
                         <div class="coffee-title"><%= product.getName() %></div>
-                       <!--  <div class=" coffee-message">Tall(394ml)392kcal</div> -->
+                          <div class=" coffee-message">Medium (350ml) 290 kcal</div>
+                         <!--  <div class=" coffee-message">Tall(394ml)392kcal</div> -->
                         </div>
                         </div>
                         <div class="coffee-cost-details">
@@ -180,7 +212,7 @@ font-family: 'Quicksand', sans-serif;
                 <div class="pickup-choices">
                     <div class="choices">
                         <div class="radio"> 
-                            <input type="radio" class='e' id="1" name="delivery_type" value="takeaway">
+                            <input type="radio" class='e' id="1" name="delivery_type" value="Starry night">
                         </div>
                         <div class="name">
                             <label for="1">Starry night</label>
@@ -189,7 +221,7 @@ font-family: 'Quicksand', sans-serif;
                     </div>
                     <div class="choices">
                         <div class="radio">
-                            <input type="radio" id="2" class='e' name="delivery_type" value="dine_in">
+                            <input type="radio" id="2" class='e' name="delivery_type" value="Van Gogh's Palette">
                         </div>
                         <div class="name">
                             <label for="2">Van Gogh's Palette</label>
@@ -197,7 +229,7 @@ font-family: 'Quicksand', sans-serif;
                     </div>
                     <div class="choices">
                         <div class="radio">
-                            <input type="radio" id="3" class='e' name="delivery_type" value="delivery">
+                            <input type="radio" id="3" class='e' name="delivery_type" value="Cafe Under the Stars">
                         </div>
                         <div class="name">
                             <label for="3">Cafe Under the Stars</label>
@@ -211,17 +243,30 @@ font-family: 'Quicksand', sans-serif;
             <div class="address">
                 <div class="delivery-details">
                     <div class="delivery-name">
-                        Delivery to <span class="name" id="del-name">Jane</span>
+                        Delivery to <span class="name" id="del-name">Jaya</span>
                     </div>
+                   
+                    <% if(delivery != null){%>
                     <div class="delivery-address" id="del-address"></div>
-                    No 4 , adhisankaran st , maha nagar , kanchipuram
+                    <%= delivery.getAddress() %> <%= delivery.getLandmark() %><%= delivery.getCity() %><%= delivery.getPincode() %>
                 </div>
     
                 <div class="change-address">
-                    <a href="../../pages/fill forms/change-address.html">
+                    <a href="<%= request.getContextPath() %>/address_profile">
                         <button>Select address</button>
                     </a> 
                 </div>
+                
+                    <%}else{%>
+                    <div class="delivery-address" id="del-address"></div>
+                    Add address
+                </div>
+              <div  class="change-address">
+              
+                 <a href="<%= request.getContextPath() %>/add_address" > <button >Add Address</button></a> 
+                </div>
+                <%} %>
+                
             </div>
 </section>
  
@@ -289,9 +334,10 @@ font-family: 'Quicksand', sans-serif;
                     <!-- </a> -->
                 </div>
             </div>
-
         </section>
-        <%}else{ %>
+       
+		<% 
+        }else{ %>
          <h2 class="heading-cart">Your cart</h2>
         <h3 class="heading-cart"> ADD PRODUCT IN THE CART  </h3>
         <%} %>
@@ -302,6 +348,17 @@ font-family: 'Quicksand', sans-serif;
     const orderLink = document.getElementById('btn_order1');
 
     orderButton.addEventListener('click', function () {
+    	  <%List<Cart> cartList1 = (List<Cart>) session.getAttribute("cart_list");%>
+    	 <%
+         double total1 = 0 ;
+ 		if(cartList1!=null){
+         
+         ProductService pService = new ProductService();
+ 		 total1 = pService.getTotalCartPrice(cartList);
+ 		}
+         %>
+    	// cartlist is null
+    	
         // Find the selected radio button
         let selectedValue = null;
         const delivery = document.querySelectorAll('input[name="delivery_type"]');
@@ -312,21 +369,42 @@ font-family: 'Quicksand', sans-serif;
                 break;
             }
         }
+        <% DeliveryAddresses delivery = new DeliveryAddresses(); %>
+        <%String loggedUserUniqueEmail = (String) request.getSession().getAttribute("loggedUser");
 
+    	 UserService  user = new UserService();
+    	 User u = null; %>
+    	 <%u = user.findByEmail(loggedUserUniqueEmail); %>
+        <% delivery = new DeliverAddressService().getAddressByUserIdAndStatus(u.getId(), 1); %>
+        if (<%= delivery == null %>) {
+            alert('Please add an address for delivery.');
+            return;
+        }
+       
+        const totalCost = <%= total1 %>;
+        const addressId = <%= delivery != null ? delivery.getAddressId() : null %>;
         // If no radio button is selected, show an alert
         if (selectedValue === null) {
             alert('Please select a packaging option.');
         } else {
             // Set the href attribute of the anchor element
             console.log(selectedValue);
-            const orderLinkHref = '<%=request.getContextPath()%>/place_order?packaging_type=' + selectedValue;
+            const orderLinkHref = '<%= request.getContextPath()%>/place_order?address_id=' + addressId + '&total=' + totalCost + '&selected_value=' + selectedValue; // Add address_id here
 
             
             orderLink.href = orderLinkHref;
             console.log(selectedValue);
             console.log(orderLinkHref);
-            alert('Successfully selected a packaging option.');
+            alert('Order will be placed sucessfully');
         }
+        
+        
+        
+		<%--  const cartList1 = <%= cartList1 %>;
+        if ( cartList1.length === 0) {
+            alert('Your cart is empty. Please add items to your cart before placing an order.');
+            return;
+        } --%>
     });
 </script>
     

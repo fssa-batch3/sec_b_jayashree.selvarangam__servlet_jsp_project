@@ -44,13 +44,10 @@ public class AddToCartServlet extends HttpServlet {
 		            re.forward(request, response);
 				}
 				else {
-				PrintWriter out = response.getWriter();
-//	        	out.print("add to cart servlet");
-			
+				PrintWriter out = response.getWriter();			
 	            List<Cart> cartList = new ArrayList<>();
 	            int id = Integer.parseInt(request.getParameter("product_id"));
 	            int sizeId = Integer.parseInt(request.getParameter("size_id"));
-//	            int cateId = Integer.parseInt(request.getParameter("category_id"));
 	             String auth = (String) request.getSession().getAttribute("loggedUser");
 	             ProductService prod = new ProductService();
 	             Product pro = new Product();
@@ -61,19 +58,17 @@ public class AddToCartServlet extends HttpServlet {
 					s = size.getSizeById(sizeId);
 				} catch (ValidationException | ServiceException e) {
 					e.printStackTrace();
+					throw new ServletException(e.getMessage());
 				}catch (PersistanceException e) {
 					e.printStackTrace();
+					throw new ServletException(e.getMessage());
 				}
 	             
 	         	Price price1 = new Price(); 
 	         	price1.setPrice(pro.getPrice());
 	         	price1.setPriceId(pro.getPriceObj().getPriceId());
-	             
-//	         	Category catego = new Category();
-//	         	catego.setCategoryId(cateId);
 	            Cart cm = new Cart();
 	            cm.setProduct_id(id);
-//	            cm.setCategory(catego);
 	            cm.setSizeId(sizeId);
 	            cm.setName(pro.getName());
 	            cm.setPrice(pro.getPriceObj().getPrice());
@@ -88,27 +83,40 @@ public class AddToCartServlet extends HttpServlet {
 	            if (cart_list == null) {
 	                cartList.add(cm);
 	                session.setAttribute("cart_list", cartList);
-					/* response.sendRedirect("index.jsp"); */
+	                RequestDispatcher re = request.getRequestDispatcher("/addtocartview.jsp");
+    	            re.forward(request, response);
 	            } else {
 	                cartList = cart_list;
 
 	                boolean exist = false;
+	                
 	                for (Cart c : cart_list){
 	                    if (c.getProduct_id() == id && c.getSizeId()== sizeId){
 	                        exist = true;
+	                        
 	                        out.println("<h3 style='color:crimson; text-align: center'>Item Already in Cart. <a href='cart.jsp'>GO to Cart Page</a></h3>");
+	                        break;
 	                    }
 	                }
 	                if (!exist) {
+	                	
 	                    cartList.add(cm);
-	                 //   System.out.println(cartList);
-	                  
-						/* response.sendRedirect("index.jsp"); */
+	                    RequestDispatcher re = request.getRequestDispatcher("/addtocartview.jsp");
+	    	            re.forward(request, response);
+	                    
+	                }else {
+	                
+//	                	String cartAlert = "Product already in your cart";
+//	                	request.setAttribute("cartAlert", cartAlert);
+	                	response.sendRedirect(
+	    						request.getContextPath() + "/product_detail?product_id=" + id + "&existInBag=" + exist);
+
 	                }
+
+
 	            }
 	            
-	            RequestDispatcher re = request.getRequestDispatcher("/addtocartview.jsp");
-	            re.forward(request, response);
+	           
 				}
 	            
 	        }

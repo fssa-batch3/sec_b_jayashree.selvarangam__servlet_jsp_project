@@ -31,22 +31,35 @@ public class EditAddressServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Integer addressId = Integer.parseInt(request.getParameter("address_id"));
-		Integer userId = Integer.parseInt(request.getParameter("user_id"));
+		
+		String error = (String)request.getAttribute("error");
+		if(error!=null) {
+			request.setAttribute("error", error);
+			RequestDispatcher rd = request.getRequestDispatcher("/editAddress.jsp");
+			rd.forward(request,response);
+
+		}else {
 		DeliverAddressService d = new DeliverAddressService();
 		DeliveryAddresses dA = null;
 		
+		int addressId = Integer.parseInt(request.getParameter("address_id"));
+		int userId = Integer.parseInt(request.getParameter("user_id"));
+		
 		 try {
 			dA = d.findAddressById(addressId);
-		} catch (ValidationException | ServiceException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
+			 String getError = e.getMessage();
+			 request.setAttribute("error", getError);
+			 RequestDispatcher rd = request.getRequestDispatcher("/editAddress.jsp");
+				rd.forward(request,response);
 		}
 		request.setAttribute("editAddress",dA);
 		request.setAttribute("addressId", addressId);
 		request.setAttribute("userId", userId);
 		RequestDispatcher rd = request.getRequestDispatcher("/editAddress.jsp");
 		rd.forward(request,response);
+		}
 	}
 
 	

@@ -20,7 +20,9 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Merienda:wght@300;400;500;600&family=Montserrat:wght@400;500&family=Poppins:ital,wght@0,100;0,300;0,400;1,100;1,200;1,300;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-      
+      <script src="
+		https://cdn.jsdelivr.net/npm/sweetalert2@11.7.28/dist/sweetalert2.all.min.js
+		"></script>
      <style>
     
    
@@ -30,9 +32,11 @@
     </head>
     <body>
     	
+   
     			<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 			<%@ include file="header.jsp" %>
         <section class="about-product" id="about-product">
+        
             <div class="row">
         
                 <div class="image">
@@ -43,7 +47,7 @@
         		
                 <div class="content">
                 <h3 class="heading"><%= product.getName() %></h3>
-
+				 <p class="calorie" id="size_show">Medium(390 ML) .290 Kcal</p>
                 
                 <p class="detail"><%= product.getDescription() %></p>
 
@@ -100,7 +104,18 @@
                 if (productPrices[i].size === size) {
                     priceDisplay.innerText = "Rs. " + productPrices[i].price;
                     priceFound = true;
-
+					
+                    var sizeShow = document.getElementById("size_show");
+                    if(sizeId==1){
+                    	sizeShow.innerText = "Tall(450 ML) .375 Kcal";
+                    }else if(sizeId==2){
+                    	sizeShow.innerText = "Medium(350 ML) .290 Kcal";
+                    }else{
+                    	sizeShow.innerText = "Short(250 ML) .190 Kcal";
+                    }
+                    
+                    
+                    
                     // Update the href of the add to cart link with the selected size_id
                     var addToCartLink = document.getElementById("addToCartLink");
                     addToCartLink.href = "<%= request.getContextPath() %>/add_to_cart_servlet?product_id=<%= product.getProduct_id()%>&size_id=" + sizeId;
@@ -108,6 +123,8 @@
                     break;
                 }
             }
+            
+            
         }
 
         function addToCart() {
@@ -116,45 +133,50 @@
                 alert("Please log in to buy products.");
                 return false; // Prevent the link from being followed.
             <% } %>
+            }
+        
+        
+        function checkExistInBagParameter() {
+          	 
+          	 
+            const url = new URL(window.location.href);
+            const existInBag = url.searchParams.get("existInBag");
+            console.log("existInBag"+existInBag);
+            if (existInBag == "true") {
+            	console.log("innn existInBag"+existInBag);
+            	Swal.fire({
+            	    icon: 'warning',
+            	    text: 'Product already exists in the bag!',
+            	    showConfirmButton: false,
+            	    customClass: {
+            	        popup: 'swal-wide', // Applies the custom class to the modal popup
+            	        icon: 'teal-text' // Applies the custom class to the modal title
+            	        // Applies the custom class to the modal content
+            	    },
+            	    timer: 2000
+            	});
+                // Remove the existInBag parameter from the URL
+                url.searchParams.delete("existInBag");
+                // Delay for 2 seconds (2000 milliseconds) before redirection
+                setTimeout(function() {
+                    // Redirect to the updated URL without existInBag parameter
+                    window.location.href = url.toString();
+                }, 2000);
+            }
         }
+
+     
+        
+        window.addEventListener('DOMContentLoaded', function () {
+            checkExistInBagParameter();
+        });
+     
+        
+        
     </script>
 
 
-        <!-- <footer>
-            <section class="footer">
 
-            <div class="box-container">
-            
-            <div class="box">
-            <h3>our branches</h3>
-            <a href="#"> <i class="fas fa-arrow-right"></i> India </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> USA </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> France </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Africa </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Japan </a>
-            </div>
-            
-            <div class="box">
-            <h3>quick links</h3>
-            <a href="../../index.html"> <i class="fas fa-arrow-right"></i> home </a>
-            <a href="../../pages/order/order-bestseller.html"> <i class="fas fa-arrow-right"></i> order </a>
-            <a href="../../pages/payment/payment.html"> <i class="fas fa-arrow-right"></i> pay </a>
-            <a href="../../pages/My orders/myorders.html"> <i class="fas fa-arrow-right"></i> myorders </a>
-            <a href="../../pages/blogs/blog.html"> <i class="fas fa-arrow-right"></i> blog </a> -->
-        <!-- </div> -->
-                    
-        <!-- <div class="box">
-            <h3>contact info</h3>
-            <a href="#"> <i class="fab fa-facebook-f"></i> facebook </a>
-            <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
-            <a href="#"> <i class="fab fa-twitter"></i> twitter </a> -->
-        <!-- <a href="#"> <i class="fab fa-instagram"></i> instagram </a>
-            <a href="#"> <i class="fab fa-linkedin"></i> linkedin </a>
-            </div>
-            
-            </div>
-            </section>
-            </footer> --> 
     </body>
   
 </html>

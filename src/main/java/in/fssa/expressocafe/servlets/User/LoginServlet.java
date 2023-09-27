@@ -26,17 +26,11 @@ import in.fssa.expressocafe.service.UserService;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
-
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		UserService userService = new UserService();
-
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
 
@@ -54,17 +48,11 @@ public class LoginServlet extends HttpServlet {
 			try {
 				userService.loginUser(email, password);
 				session.setAttribute("loggedUser", email);
-				// admin header
-				// profile
-				// logout mandatory 
-				// bug in create product 
-				// add get all prices  
-				// get all prices with product id
 				response.sendRedirect(request.getContextPath()+"/getProducts");
-			} catch (ValidationException e) {
+			}catch (ValidationException e) {
 				e.printStackTrace();
 				response.sendRedirect("login.jsp?errorMessage="+e.getMessage());
-			} catch (ServiceException e) {
+			}catch (ServiceException e) {
 				e.printStackTrace();
 			}
 		}
@@ -76,20 +64,16 @@ public class LoginServlet extends HttpServlet {
 			} catch (ValidationException e) {
 				e.printStackTrace();
 				String getError = e.getMessage();
-				//String errorArray[] = getError.split(":");
-				response.sendRedirect("LoginNew?error=" + getError);
+				response.sendRedirect("login.jsp?error=" + getError);
 			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				String getError = e.getMessage();
-			//	String errorArray[] = getError.split(":");
-				response.sendRedirect("LoginNew?error=" + getError);
+				response.sendRedirect("login.jsp?error=" + getError);
 
 			}
 		}
 	}
 }
-/////////////////////////servlet ends /////////////////////////////
 
 
 

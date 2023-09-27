@@ -42,15 +42,12 @@ public class NewAddressServlet extends HttpServlet {
     	    String landMark = request.getParameter("land_mark");
     	    String city = request.getParameter("city");
     	    int pincode = Integer.parseInt(request.getParameter("pincode"));
-    	 
-    	
 			/*
 			 * long mobileNumber = 0;
 			 * 
 			 * if (mobileNumberParam != null && !mobileNumberParam.isEmpty()) { mobileNumber
 			 * = Long.parseLong(mobileNumberParam); }
 			 */
-
     	    String loggedUserUniqueEmail = (String) request.getSession().getAttribute("loggedUser");
     	    System.out.println(loggedUserUniqueEmail);
     	    DeliveryAddresses address = new DeliveryAddresses();
@@ -59,27 +56,28 @@ public class NewAddressServlet extends HttpServlet {
     	    address.setLandmark(landMark);
     	    address.setCity(city);
     	    address.setPincode(pincode);
-    	    
 	    	User u =   new User();
 	    	u.setEmail(loggedUserUniqueEmail);
 	    	UserService user = new UserService();
 	    	try {
 			u = user.findByEmail(loggedUserUniqueEmail);
-			
 	    	address.setUser(u);
     	    DeliverAddressService  deliveryAddress = new DeliverAddressService();
     	    PrintWriter out = response.getWriter();
-    	    
     	        deliveryAddress.createDeliveryAddress(address);
     	        request.setAttribute("address",address);
     	        RequestDispatcher rd = request.getRequestDispatcher("/address_profile");
     	        rd.forward(request, response);
     	    } catch (ValidationException | ServiceException e){
     	        e.printStackTrace();
+    	        String getError = e.getMessage();
+				response.sendRedirect("add_address?error=" + getError);
+    	        
     	    } catch (com.google.protobuf.ServiceException e){
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				String getError = e.getMessage();
+				response.sendRedirect("add_address?error=" + getError);
+				
 			} 
     	}
-
 }

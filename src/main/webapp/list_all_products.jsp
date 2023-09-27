@@ -709,6 +709,7 @@ header #toggler{
 	
 	<%@ include file="header.jsp" %>
   <section class="menu">
+  
            <div class="product">
             <div class="bestsellers">
                 <div class="bestsellers-image">
@@ -729,13 +730,25 @@ header #toggler{
         </section>
         <div class="navigate">
             <h3>Drinks</h3>
-            <p><a href="#">Indulge in the rich aroma and robust flavors of our meticulously crafted coffee, an exquisite experience that will awaken your taste buds and elevate your day</p>
+            <p>Indulge in the rich aroma and robust flavors of our meticulously crafted coffee, an exquisite experience that will awaken your taste buds and elevate your day</p>
         </div>
         <section class="Expressoa" id="Expressoa">
             <h3 class="expressoa-title"></h3>
-
-            
-		
+				
+		           	<div>
+					<%	
+					String err = request.getParameter("error");
+					%>
+					<%
+					if (err != null) {
+					%>
+					<div class="error_div">
+						<p><%=err%></p>
+					</div>
+					<%
+					}
+					%>	
+				</div>
                 </section>
                 <section>
                     <div class="beverages1">
@@ -743,19 +756,17 @@ header #toggler{
                    
  <% List<Product> productList = (List<Product>) request.getAttribute("ProductList"); %>
 <% for(Product product : productList ){ %>
-            <div class="beverage-container">
-            
-                <div class="beverage-img-content-cost">
+            <div class="beverage-container"><div class="beverage-img-content-cost">
                 <div class="beverage-image">
                     <img src="https://iili.io/J97on94.jpg" alt="">
                 </div>
                 <div class="beverage-content-cost">
                 <div class="beverage-content">
                     <div class="beverage-vegimg">
-                        <img src="" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/image/veg.svg" alt="">
                     </div>
                     <div class="beverage-title"><h3> <%=  product.getName()    %></h3></div>
-                    
+                     <div class="beverage-message-1"><p>Medium(350 ML) .290 Kcal</p></div>
                     <div class="beverage-message-2" id="truncate-text"><p> <%=  product.getDescription()   %> </p></div>
                 </div>
                 <div class="beverage-costdetail">

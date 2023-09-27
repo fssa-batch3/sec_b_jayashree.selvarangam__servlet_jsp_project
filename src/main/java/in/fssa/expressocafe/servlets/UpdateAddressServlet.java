@@ -21,53 +21,68 @@ import in.fssa.expressocafe.service.DeliverAddressService;
 @WebServlet("/update_address")
 public class UpdateAddressServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UpdateAddressServlet() {
-        super();
 
-    }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public UpdateAddressServlet() {
+		super();
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Get the form parameters
-    	int userId =  Integer.parseInt(request.getParameter("user_id"));
-        int addressId = Integer.parseInt(request.getParameter("address_id"));
-        String title = request.getParameter("title");
-        String address = request.getParameter("address");
-        String landmark = request.getParameter("land_mark");
-        String city = request.getParameter("city");
-        int pincode = Integer.parseInt(request.getParameter("pincode"));
+	}
 
-        // Create a new DeliveryAddresses object with the updated information
-        DeliveryAddresses updatedAddress = new DeliveryAddresses();
-        updatedAddress.setAddressId(addressId);
-        updatedAddress.setTitle(title);
-        updatedAddress.setAddress(address);
-        updatedAddress.setLandmark(landmark);
-        updatedAddress.setCity(city);
-        updatedAddress.setPincode(pincode);
-        User u = new User();
-        u.setId(userId);
-        updatedAddress.setUser(u);
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.print("jsj123s");
+		// Get the form parameters
+		int userId = Integer.parseInt(request.getParameter("user_id"));
+		int addressId = Integer.parseInt(request.getParameter("address_id"));
+		String title = request.getParameter("title");
+		String address = request.getParameter("address");
+		String landmark = request.getParameter("land_mark");
+		String city = request.getParameter("city");
+		int pincode = Integer.parseInt(request.getParameter("pincode"));
 
-        // Call a service or DAO method to update the address in the database
-        DeliverAddressService deliveryService = new DeliverAddressService();
-        try {
-            deliveryService.updateAddress(addressId,updatedAddress);
-            request.setAttribute("address",updatedAddress);
-	        RequestDispatcher rd = request.getRequestDispatcher("/address_profile");
-	        rd.forward(request, response);
-        } catch (ServiceException | ValidationException e) {
-            e.printStackTrace();
-            // Handle the exception, possibly by displaying an error message to the user
-        }
+		// Create a new DeliveryAddresses object with the updated information
+		DeliverAddressService d = new DeliverAddressService();
+		DeliveryAddresses dA = null;
+		
+		DeliveryAddresses updatedAddress = new DeliveryAddresses();
+		updatedAddress.setAddressId(addressId);
+		updatedAddress.setTitle(title);
+		updatedAddress.setAddress(address);
+		updatedAddress.setLandmark(landmark);
+		updatedAddress.setCity(city);
+		updatedAddress.setPincode(pincode);
+		User u = new User();
+		u.setId(userId);
+		
+		updatedAddress.setUser(u);
+		
 
-      
-    }
+		// Call a service or DAO method to update the address in the database
+		DeliverAddressService deliveryService = new DeliverAddressService();
+		try {
+			dA = d.findAddressById(addressId);
+			deliveryService.updateAddress(addressId, updatedAddress);
+			request.setAttribute("address", updatedAddress);
+			RequestDispatcher rd = request.getRequestDispatcher("/address_profile");
+			rd.forward(request, response);
+		} catch (Exception e) {
+			
+			
+			e.printStackTrace();
+			System.out.print("jsjs");
+			request.setAttribute("editAddress",dA);
+			request.setAttribute("addressId", addressId);
+			request.setAttribute("userId", userId);
+			request.setAttribute("error", e.getMessage());
+			RequestDispatcher rd = request.getRequestDispatcher("/editAddress.jsp");
+			rd.forward(request, response);
+		}
+
+	}
 }

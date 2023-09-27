@@ -34,32 +34,31 @@ public class ListAllProductsToUsers extends HttpServlet {
 	 */
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		ProductService productservice = new ProductService();
+		List<Product> productList = null;
 		try {
 			String categoryId =request.getParameter("cate_id");
 			if(categoryId==null) {
-			List<Product> productList = productservice.getAllProducts();
-			request.setAttribute("ProductList", productList);
-			RequestDispatcher rd = request.getRequestDispatcher("list_all_products.jsp");
-			rd.forward(request, response);
+			 productList = productservice.getAllProducts();
+			
 		}
 		else {
 			int cateId = Integer.parseInt(categoryId);
-			List<Product> productList = productservice.getAllproductswithCategoryId(cateId);
+			 productList = productservice.getAllproductswithCategoryId(cateId);
+				
+		}
 			request.setAttribute("ProductList", productList);
 			RequestDispatcher rd = request.getRequestDispatcher("list_all_products.jsp");
-			rd.forward(request, response);	
-		}
+			rd.forward(request, response);
+			
 		} catch (ServiceException e) {
 			e.printStackTrace();
+			String getError = e.getMessage();
+			response.sendRedirect(request.getContextPath()+"/list_all_products.jsp?error=" + getError);
 		} catch (ValidationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
-	}
-
-	
+			String getError = e.getMessage();
+			response.sendRedirect(request.getContextPath()+"/list_all_products.jsp?error=" + getError);
+		}	
+	}	
 }

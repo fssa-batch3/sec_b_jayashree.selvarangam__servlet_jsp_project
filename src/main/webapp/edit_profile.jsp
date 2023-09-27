@@ -1,4 +1,4 @@
-<%@page import="in.fssa.expressocafe.model.User"%>
+<%-- <%@page import="in.fssa.expressocafe.model.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -104,3 +104,106 @@ button:hover {
 </div>
 </body>
 </html>
+ --%>
+
+<%@page import="in.fssa.expressocafe.model.User"%>
+<%@page import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>coffee shop </title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+            integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/profile.css">
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/header.css">
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/footer.css ">
+        <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Merienda:wght@300;400;500;600&family=Montserrat:wght@400;500&family=Poppins:ital,wght@0,100;0,300;0,400;1,100;1,200;1,300;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+          * { font-family: 'Aclonica', sans-serif;
+			font-family: 'Merienda', cursive;
+			font-family: 'Montserrat', sans-serif;
+			font-family: 'Poppins', sans-serif;
+			font-family: 'Quicksand', sans-serif;
+        }
+        </style>
+    </head>
+    <body>
+        <section class="profile" id="profile">
+
+
+			 <%@ include file="header.jsp" %>
+           <%User user = (User)request.getAttribute("user"); %>
+  
+ 
+            <h1 class="heading">
+                <i class="fa-solid fa-circle-user"></i> Profile 
+            </h1>
+         
+     <div>
+					<%
+					String err = (String)request.getAttribute("error");
+					%>
+					<%
+					if (err != null) {
+					%>
+					<script>
+					    // Display a Swal alert when the 'err' parameter is not null
+					    Swal.fire({
+					        icon: 'error',
+					        title: 'Error',
+					        text: '<%=err%>'
+					    });
+					</script>
+					<%
+					}
+					%>
+				</div>
+				
+				   <div>
+					<%
+					String err1 = (String)request.getParameter("error");
+					%>
+					<%
+					if (err1 != null) {
+					%>
+					<script>
+					    // Display a Swal alert when the 'err' parameter is not null
+					    Swal.fire({
+					        icon: 'error',
+					        title: 'Error',
+					        text: '<%=err%>'
+					    });
+					</script>
+					<%
+					}
+					%>
+					</div>
+ 				<form action="update_profile?userid=<%= user.getId() %>" method="POST"> 
+                <label>FirstName:</label>
+                <input type="text" name="firstName" pattern="[A-Za-z\s]+" title="only alphabet" id="user_name"  value="<%= user.getFirstName() %>" class="box" required>
+                
+                <label>LastName:</label>
+                <input type="text" name="lastName" pattern="[A-Za-z\s]+" title="only alphabet" id="user_name1"   value="<%= user.getLastName() %>" class="box" required>
+                
+                <label>Email_id:</label>
+                <input type="email"  id="user_email" value="<%= user.getEmail() %>"class="box" disabled>
+               
+                <label>Mobile number:</label>
+                <input type="tel" name="phoneNumber" id="phoneNumber"  pattern="^[6-9]\d{9}$" title="Enter 10 numbers only and starts above 6"   value="<%= user.getPhoneNo() %>" class="box" >
+              
+             
+                  <button class="box" type="submit">Update</button>
+            </form>
+        </section>
+    </body>
+   
+    </html>

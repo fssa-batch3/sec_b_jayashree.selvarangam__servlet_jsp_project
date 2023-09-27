@@ -34,12 +34,17 @@ public class AddressProfileServlet extends HttpServlet {
        
     	 String loggedUserUniqueEmail = (String) request.getSession().getAttribute("loggedUser");
     	 DeliveryAddresses address = (DeliveryAddresses) request.getAttribute("address");
+    	 UserService user = new UserService();
+    	 User u = null;
         DeliverAddressService addressService = new DeliverAddressService();
         List<DeliveryAddresses> addressList = null;
 		try {
-			addressList = addressService.findAllAddressesByUserEmail(address.getUser().getId());
-		} catch (ValidationException | ServiceException e) {
+			u = user.findByEmail(loggedUserUniqueEmail);
+			addressList = addressService.findAllAddressesByUserEmail(u.getId());
+		} catch (ValidationException | ServiceException | com.google.protobuf.ServiceException e) {
 			e.printStackTrace();
+			 String getError = e.getMessage();
+			 response.sendRedirect("/viewAddressProfile.jsp?error=" + getError);
 		}
         // Set the address list as an attribute in the request
         request.setAttribute("addressList",addressList);

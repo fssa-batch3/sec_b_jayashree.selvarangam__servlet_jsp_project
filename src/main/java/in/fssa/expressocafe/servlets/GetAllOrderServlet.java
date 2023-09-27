@@ -56,11 +56,17 @@ public class GetAllOrderServlet extends HttpServlet {
 			
 			
 		} catch (ValidationException | ServiceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			String getError = e.getMessage();
+			request.setAttribute("errorMessage", getError);
+			RequestDispatcher rd = request.getRequestDispatcher("/order.jsp");
+			rd.forward(request, response);
 		} catch (in.fssa.expressocafe.exception.ServiceException e) {
-
 			e.printStackTrace();
+			String getError = e.getMessage();
+			request.setAttribute("errorMessage", getError);
+			RequestDispatcher rd = request.getRequestDispatcher("/order.jsp");
+			rd.forward(request, response);
 		}
 		
 		request.setAttribute("orderList", orderList);

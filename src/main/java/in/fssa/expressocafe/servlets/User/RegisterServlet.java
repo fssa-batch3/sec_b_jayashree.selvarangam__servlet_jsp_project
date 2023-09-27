@@ -39,6 +39,8 @@ public class RegisterServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/LoginNew");
 		} catch (com.google.protobuf.ServiceException | ValidationException e) {
 			e.printStackTrace();
+			String getError = e.getMessage();
+			response.sendRedirect(request.getContextPath()+"/new_register_servlet?error=" + getError);
 		} 
 	
 	}

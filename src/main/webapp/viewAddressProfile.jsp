@@ -1,10 +1,11 @@
 
+    
 <!DOCTYPE html>
 <%@page import="in.fssa.expressocafe.model.DeliveryAddresses"%>
 <%@page import="java.util.List"%>
 <html>
 <head>
-<title>Insert title here</title>
+
 
 <link rel="stylesheet" href="chrome-extension://mcgbeeipkmelnpldkobichboakdfaeon/css/github-dark.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
@@ -18,216 +19,310 @@
     
     <link rel="stylesheet" href="../assets/css/header.css">
         
-    <style>
-   :root{
-    --main-color:#443;
-    --bs-pink: #d63384;
-    --bs-red: #dc3545;
-    --bs-orange: #b94728;
-    --bs-yellow: #ffc107;
-    --bs-green: #198754;
-    --bs-teal: #20c997;
-    --bs-cyan: #0dcaf0;
-    --bs-gray-400: #ced4da;
-    --bs-gray-500: #adb5bd;
-    --bs-gray-600: #6c757d;
-    --bs-gray-700: #495057;
-    --bs-gray-800: #343a40;
-    --bs-gray-900: #212529;
-    --bs-primary: #0d6efd;
-    --border-radius:30% 4% ;
-    --border-radius-hover:4% 30%;
-    --border:.2rem solid var(--main-color);
-    --border-hover:.2rem dashed var(--main-color);
-}
-        .address_container{
-            border: 1px solid wheat;
-            border-radius: 15px;
-            padding: 10px 15px 10px 15px;
-            margin: 30px;
-            background-color:var(--bs-gray-400);
-            box-shadow: 3px 3px var(--bs-gray-600);
+
+
+<title>order page</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+        <!-- <link rel="stylesheet" href="../../assets/css/myorder.css"> -->
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/header.css">
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/footer.css ">
+<link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Merienda:wght@300;400;500;600&family=Montserrat:wght@400;500&family=Poppins:ital,wght@0,100;0,300;0,400;1,100;1,200;1,300;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+       <style>
+          * { font-family: 'Aclonica', sans-serif;
+font-family: 'Merienda', cursive;
+font-family: 'Montserrat', sans-serif;
+font-family: 'Poppins', sans-serif;
+font-family: 'Quicksand', sans-serif;
         }
-        *{
-            color:var(--bs-gray-800)
-        }
-        .add_address img {
-    margin-left: 10px;
-    border-style: inset;
-    color: teal;
-}
-        .show_address{
-            margin-top: 30px;
-        }
-        #edit{
-            /* padding: 5px 25px;
-            border-radius: 5px;
-            position: relative;
-            bottom: 30px; 
-            background-color: #debb79; */
-            padding: 5px 25px;
-    border-radius: 5px;
-    /* position: relative; */
-    /* bottom: 30px; */
-    /* background-color:var(--bs-teal); */
-        }
-        .add_address{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 50px;
-        }
-        .add_address img{
-            margin-left:10px;
-            border-style: inset;
-        }
-        .single_address{
-            display: flex;
-            flex-direction: row;
-            margin:30px 60px;
-            overflow-x: scroll;
-        }
-        .address1{
-            max-width: 500px;
-            width: 250px;
-            height: 280px;
-        }
-        .address_type{
-            text-align: center;
-            margin-top:10px;
-        }
-        /* .main_address{
-            padding: 10px 10px;
-            width: 300px;
-        } */
-        .main_address {
-    padding: 10px 10px;
-    width: 300px;
-    margin: 30px;
-}
-#default_id{
-    
-    position: relative;
-    bottom: 10px;
-    color:teal
-}
-#default_id:hover{
-    color:var(--bs-gray-600);
-}
- .default123 {
-    border-style: none;
-    border-radius: 50px;
-    width: 70%;
-    padding: 5px;
-    background:teal;
-    color: white;
-    border-color: unset;
-    align-items: center;
-    text-align: center;
-}
-.button {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+        /* header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+} */
+
+ h1 {
+  margin: 0;
 }
 
-#edit {
-    padding: 5px 25px;
-    border-radius: 5px;
-    /* position: relative; */
-    /* bottom: 30px; */
-    position: relative;
-    bottom: 10px;
-    /* background-color: #debb79; */
-}
-.main_address h3{
-    margin:5px 0px;
-    height:125px ;
+main {
+  padding: 20px;
 }
 
-.main_address{
-    padding: 10px 10px;
-    width: 100%;
-    margin: 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.single_address::-webkit-scrollbar {
- display: none;
-}
-       
-    /* .default {
- */    /* position: absolute;
-    
-    /* text-align: center; */
-    /* padding-left: 75px;
-} */ 
-
-        .button{
-            width: 100%;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-        }
-.go{
-    margin-left: 50px;
-    font-weight: bold;
-
-}
-.go:hover{
-    color:var(--bs-teal)
+.order-list {
+  margin-bottom: 30px;
 }
 
-    </style>
-	</head>
-	<body>
-    <% List<DeliveryAddresses> addressList = (List<DeliveryAddresses>) request.getAttribute("addressList");  %>
+.order-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 5vh;
+}
 
-    <section class="add_address">
-        <div class="add_address">
-            <h2>Add Address</h2>
-         <a href="/address/address_form"> <img src="../assets/image/download1234.png" alt="" width="35px"></a>
-        </div>
-    </section>
-    <section class="show_address">
-        <div class="single_address">
+.order-item h3 {
+  margin: 0;
+}
 
-        <% for(DeliveryAddresses deliveryAddress : addressList){ %>
-        <div class="address_container">
-            <div class="address1">
-                    <div class="address">
-                        <h2 class="address_type"><%= deliveryAddress.getTitle() %></h2>
-                        <div class="main_address">
-                      
-                        <h3 class="address_info2"><%= deliveryAddress.getAddress() %> <%= deliveryAddress.getLandmark() %><%= deliveryAddress.getCity() %></h3>
-                        <% if( deliveryAddress.getStatus() == 1 ){ %>
-                        <p class="default123">default</p>
-                        <% } %>
-                        
+.order-item p {
+  margin-bottom: 10px;
+}
+
+
+.req{
+   display: flex;
+   justify-content: space-between;
+    margin-bottom: 7vh;
+    padding: 14px 50px 10px 50px;
+    background-color: #ececec;
+} 
+.reorder1{
+  padding-top: 2.5vh;
+}
+.order-details{
+  display: flex;
+  justify-content: space-around;
+    margin-bottom:10vh;
+}
+.quantity{
+  padding-top: 4.5vh;
+}
+
+ .order-details .product {
+  display:flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.review1{
+  margin-top: 4vh;
+}
+
+.order-details .product img {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  object-fit:cover;
+}
+
+.order-details .product-info h4,
+.order-details .product-info p {
+  margin: 0;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.order-total h4 {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.order-total p {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.reorder-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  margin-left: 10px;
+} 
+/* Unique CSS for the Order Section */
+.order-list {
+  margin-bottom: 30px;
+}
+
+.order-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 5vh;
+}
+
+.order-item h3 {
+  margin: 0;
+}
+
+.order-item p {
+  margin-bottom: 10px;
+}
+
+.req {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7vh;
+  padding: 14px 50px 10px 50px;
+  background-color: #ececec;
+}
+
+.reorder1 {
+  padding-top: 2.5vh;
+}
+
+.order-details {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10vh;
+}
+
+.quantity {
+  padding-top: 4.5vh;
+}
+
+.order-details .product {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.review1 {
+  margin-top: 4vh;
+}
+
+.order-details .product img {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.order-details .product-info h4,
+.order-details .product-info p {
+  margin: 0;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.order-total h4 {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.order-total p {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.reorder-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  margin-left: 10px;
+}
+
+
+        </style> 
+</head>
+<body>
+
+<main>
+<%@ include file="header.jsp" %>
+ 	<div>
+					<%
+					String err = request.getParameter("error");
+					%>
+					<%
+					if (err != null) {
+					%>
+						<script>
+					    // Display a Swal alert when the 'err' parameter is not null
+					    Swal.fire({
+					        icon: 'error',
+					        title: 'Error',
+					        text: '<%=err%>'
+					    });
+					</script>
+					<%
+					}
+					%>
+				</div>
+<% List<DeliveryAddresses> addressList1 = (List<DeliveryAddresses>) request.getAttribute("addressList");  %>
+            <section class="order-list">
+              <h2>Your Address</h2>
+              <div class="whole">
+                <ul class="ul-1">
+                
+              <% for(DeliveryAddresses deliveryAddress : addressList1){ %>
+			<li>
+              <div class="order-item">
+                            <div class="o-d">
+                                <div class="req">
+                                    <div class="order1_id">
+                                        <h3>Name: Jayashree</h3>
+                                    </div>
+                                    <div class="order_date">
+                                        <p>Created at: 09-22-23</p>
+                                    </div>
+                                    
+                                    <div class="status">
+                                     <% if( deliveryAddress.getStatus() == 1 ){ %>
+                                        <p>
+   										Default Address
+  											 
+										</p>
+										<%} %>
+									
+                                    </div>
+                                </div>
+					                                
+		  						  <div class="order-details">
+                                    <div class="product">
+                                        <img src="https://iili.io/JJz3Vtf.png" alt="">
+                                        <div class="product-info">
+                                            <h4><%= deliveryAddress.getTitle() %></h4>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="quantity">
+                                        <p> <%= deliveryAddress.getAddress() %> <%= deliveryAddress.getLandmark() %><%= deliveryAddress.getCity() %></p>
+                                    </div>
+                                    <div class="reorder1">
+                                     <% if( deliveryAddress.getStatus() == 0 ){ %>
+                             		
+                             		 <a  href ="<%= request.getContextPath()%>/set_default_address?user_id=<%= deliveryAddress.getUserId() %>&address_id=<%=  deliveryAddress.getAddressId() %>"> <button id="reorder" class="reorder-btn">Set as default</button></a>
+                                     <% } %> 
+                                    </div>
+                                    
+                                    <div class="reorder1">
+                                  
+                             		
+                             		 <a href="<%= request.getContextPath()%>/edit_address?address_id=<%=  deliveryAddress.getAddressId() %>&user_id=<%= deliveryAddress.getUserId() %>"> <button id="reorder" class="reorder-btn">Edit</button></a>
+                                 
+                                    </div>
+                                </div>
+                                                                
+                            </div>
                         </div>
-                    </div>
-                    <div class="button">
-                       <a href="<%= request.getContextPath()%>/edit_address?address_id=<%=  deliveryAddress.getAddressId() %>&user_id= <%= deliveryAddress.getUserId() %>"> <button id="edit" >Edit</button> </a>
-                    </div>
-                    <div class="default">
-                       <% if( deliveryAddress.getStatus() == 0 ){ %>
-                        <a  id="default_id" href ="<%= request.getContextPath()%>/set_default_address?user_id=<%= deliveryAddress.getUserId() %>&address_id=<%=  deliveryAddress.getAddressId() %>">
-                        Set as Default address
-                        </a>
-                       <% } %> 
-                    </div>
+                        
+                    </li>
+                   <%} %>
+                </ul>
+                
+             
             </div>
-        </div>
-        
-      <% } %>
-        </div>
-       
+            
+                    	       
+        </section>
+    </main>
 
-    </section>
-    <p class="go"><a href="../pages/add to cart/addtocart.html">Go to add to cart </a></p>
-    </body>
-    </html>
+</body>
+</html>

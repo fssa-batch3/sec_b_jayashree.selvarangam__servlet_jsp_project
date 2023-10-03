@@ -60,11 +60,9 @@ font-family: 'Quicksand', sans-serif;
                     <h3>Be delighted with Expresso Cafe's coffee </h3>
                     <a href="#" class="btn">Order now</a>
                 </div>
-
                 <div class="image">
                     <img src="./assets/image/home-img-1.png" class="main-home-image" alt="">
                 </div>
-
             </div>
 
             <div class="image-slider">
@@ -90,7 +88,7 @@ font-family: 'Quicksand', sans-serif;
                         <div class="coffee-image"><img src="<%= request.getContextPath() %>/assets/image/javachip.jpg" width="80px" height="80px" alt=""></div>
                         <div class="coffee-content">
                         <div class="coffee-title"><%= product.getName() %></div>
-                         <div class=" coffee-message">Medium (350ml) 290 kcal</div>
+                        <div class=" coffee-message">Medium (350ml) 290 kcal</div>
                        <!--  <div class=" coffee-message">Tall(394ml)392kcal</div> -->
                         </div>
                         </div>

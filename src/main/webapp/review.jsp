@@ -138,35 +138,33 @@ font-family: 'Quicksand', sans-serif;
           required="true"
         ></textarea>
         <!-- <button class="btn"><a href="../../index.html">Submit</a> </button>  -->
-        <button type="button" class="btn" id="submit">submit</button>
+        <a href="" id="review_submit"> <button type="button" class="btn" id="submit">submit</button> </a>
       </form>
       </section>
     </section>
   
   </body>
-  <script src="../../pages/order/header.js"></script>
+<script>
+  // Add an event listener to the textarea for input events
+  const textarea = document.querySelector("#review");
+  textarea.addEventListener("input", function () {
+    // Get the current text length
+    const currentLength = textarea.value.length;
+
+    // Check if it exceeds the limit
+    if (currentLength > 20) {
+      // Trim the text to 30 characters
+      textarea.value = textarea.value.slice(0, 20);
+    }
+  });
+</script>
   <script>
-    const queryString = window.location.search;
-    // console.log(queryString);
-    const urlParams = new URLSearchParams(queryString);
-    console.log(urlParams);
-    const product = urlParams.get("order_id");
-    console.log(product);
+  window.onpopstate = function(event) {
+      // Reload the current page
+      window.open(location.href, '_self');
+  };
 
-    const queryString1 = window.location.search;
-    // console.log(queryString);
-    const urlParams1 = new URLSearchParams(queryString);
-    console.log(urlParams);
-    const product1 = urlParams.get("product_id");
-    console.log(product1);
-
-    const queryString2 = window.location.search;
-    // console.log(queryString);
-    // const urlParams2 = new URLSearchParams(queryString);
-    // console.log(urlParams);
-    // const product2 = urlParams.get("order_id");
-    // console.log(product1);
-
+  
     localStorage.setItem("star_value", JSON.stringify("0"));
     const allStars = document.querySelectorAll(".star");
     const current_rating = document.querySelector(".current_rating");
@@ -174,6 +172,7 @@ font-family: 'Quicksand', sans-serif;
     allStars.forEach((star, i) => {
       star.onclick = function () {
         // console.log(i+1)
+        
         const current_star_level = i + 1;
         current_rating.innerText = current_star_level;
         localStorage.setItem(
@@ -190,74 +189,38 @@ font-family: 'Quicksand', sans-serif;
         });
       };
     });
-    console.log(1);
-    const user_id_array = JSON.parse(localStorage.getItem("unique_id"));
-    console.log(user_id_array);
-    const user_list = JSON.parse(localStorage.getItem("user_list"));
-    console.log(user_list);
-    // let user_id = user_list.find(e=>{
-    //     e.user_email === user_id_array ;
-    // });
-    function find_id(e) {
-      return e.user_email === user_id_array;
-    }
-    const user_id = user_list.find(find_id);
-    console.log(user_id);
+    
 
     const submit = document.getElementById("submit");
     submit.addEventListener("click", function () {
-      const stars = JSON.parse(localStorage.getItem("stars"));
+     
+      const stars = JSON.parse(localStorage.getItem("star_value"));
+      console.log(stars);
       const review_value = document.querySelector("#review").value;
+      const reviewLink = document.getElementById("review_submit");
       if (review_value === "") {
         alert("enter the review");
       }
-      const current_rating_from_LS = JSON.parse(
-        localStorage.getItem("star_value")
-      );
-      //   console.log(current_rating.innerText);
-      //    if()
-      if (current_rating.innerText !== "0") {
-        if (stars === null) {
-          const store_review = [
-            {
-              no_of_stars: parseInt(current_rating.innerText),
-              review: review_value,
-              user_name: user_id.user_name,
-              order_id: product,
-              product_id: product1,
-              user_id:user_id_array
-            }
-          ];
-          localStorage.setItem("stars", JSON.stringify(store_review));
-        } else {
-          const stars1 = JSON.parse(localStorage.getItem("stars"));
-          stars1.push({
-            no_of_stars: parseInt(current_rating.innerText),
-            review: review_value,
-            user_name: user_id.user_name,
-            order_id: product,
-            product_id: product1
-          });
-          localStorage.setItem("stars", JSON.stringify(stars1));
-        }
-      } else {
+      else if (current_rating.innerText == "0") {
         alert("fill the stars");
       }
-      const myOrder = JSON.parse(localStorage.getItem("orders"));
-      function findProduct(type) {
-        return type.order_id === product;
+      else{
+    	  const reviewLinkHref = '<%= request.getContextPath()%>/add_review?review_star=' + stars + '&review_message=' + review_value; // Add address_id here
+
+          
+    	  reviewLink.href = reviewLinkHref;
+         
+          alert('Order will be placed sucessfully');
+    	  
       }
-      const myOrderObject = myOrder.find(findProduct);
-      console.log(myOrderObject);
-      //   myOrderObject.map((object) => Object.assign(object, {
-      //     review:true,
-      //    }));
-      if (myOrderObject) {
-        myOrderObject.review = true;
-      }
-      localStorage.setItem("orders", JSON.stringify(myOrder));
       
-      window.location.href = `../../pages/My orders/myorders.html`;
+      window.onpopstate = function(event) {
+    	    // Reload the current page when navigating back
+    	    location.reload();
+    	  };
+      
+      
+     // window.location.href = `../../pages/My orders/myorders.html`;
     });
   
   </script>

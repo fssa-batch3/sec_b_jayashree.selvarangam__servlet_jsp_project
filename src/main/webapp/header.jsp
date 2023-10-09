@@ -65,7 +65,7 @@
   
     <a href="blog.jsp">Blogs</a>
 </nav>
-<div class="search-container">
+<div class="search-container">;
 <input type="text" id="searchInput" placeholder="Search">
 <ul id="searchResults"></ul>
 </div>

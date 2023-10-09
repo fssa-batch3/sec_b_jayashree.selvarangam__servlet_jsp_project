@@ -397,9 +397,7 @@
             console.log(orderLinkHref);
             alert('Order will be placed sucessfully');
         }
-        
-        
-        
+
 		<%--  const cartList1 = <%= cartList1 %>;
         if ( cartList1.length === 0) {
             alert('Your cart is empty. Please add items to your cart before placing an order.');

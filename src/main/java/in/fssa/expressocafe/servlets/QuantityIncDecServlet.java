@@ -39,10 +39,13 @@ public class QuantityIncDecServlet extends HttpServlet {
             if (action.equals("inc")) {
                 for (Cart c : cart_list) {
                     if (c.getProduct_id() == id && c.getSizeId() == sizeId) {
-                        int quantity = c.getQuantity();
-                        quantity++;
-                        c.setQuantity(quantity);
-                        break;
+                    	if(c.getQuantity() <=10) {
+                    		int quantity = c.getQuantity();
+                            quantity++;
+                            c.setQuantity(quantity);
+                            break;
+                    	}
+                        
                     }
                 }
             }

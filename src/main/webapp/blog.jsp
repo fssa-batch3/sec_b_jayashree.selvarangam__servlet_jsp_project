@@ -341,5 +341,99 @@ img {
   </footer>
 </body>
 <script src="../../pages/order/header.js"></script>
+<script>
+let allProductsDetails = [];
+async function getAllProducts() {
+    try {
+        const response = await fetch("http://localhost:8080/expressocafe-web/AllProdServlet", {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP error! Status: "+ response.status);
+        }
+
+        const responseData = await response.json();
+
+        // Access the array of products from the 'data' property
+        allProductsDetails = responseData.data;
+		console.log("allProductsDetails",allProductsDetails);
+        // Call a function to process or display the data
+        getAllProductsDetails(allProductsDetails);
+    } catch (error) {
+        console.error("Error fetching product data:", error);
+    }
+}
+
+//Call the function to fetch product data
+getAllProducts();
+const rootPath = window.location.origin;
+// function to process or display the data
+
+function getAllProductsDetails(allProducts) {
+
+//Assuming you have these variables defined elsewhere in your code
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+//Function to process or display the data fetched from the database
+function getAllProductsDetails(allProducts) {
+// Add an event listener to the search input
+searchInput.addEventListener('input', function() {
+const searchQuery = this.value.trim();
+
+// Clear previous search results
+searchResults.innerHTML = '';
+
+if (searchQuery !== '') {
+  const results = getMatchingResults(searchQuery, allProducts);
+  displayResults(results);
+
+  if (results.length === 0) {
+    displayNoResultsMessage(); // Display 'No results found' message
+  }
+} else {
+  // Input field is empty, do not display 'No results found' message
+}
+});
+}
+
+//Function to get matching results from the fetched data
+function getMatchingResults(query, allProducts) {
+return allProducts.filter(function(product) {
+return product.name.toLowerCase().includes(query.toLowerCase());
+});
+}
+
+//Function to display search results
+function displayResults(results) {
+results.forEach(function(result) {
+const listItem = document.createElement('li');
+const listItem1 = document.createElement('a');
+
+// Assuming you have a product detail URL in your data
+const uuid = result.product_id;
+listItem1.setAttribute('href', "http://localhost:8080/expressocafe-web/product_detail?product_id="+uuid);
+listItem1.textContent = result.name;
+listItem.appendChild(listItem1);
+
+searchResults.appendChild(listItem);
+});
+}
+
+//Function to display 'No results found' message
+function displayNoResultsMessage() {
+const noResultsMessage = document.createElement('li');
+noResultsMessage.textContent = 'No results found.';
+searchResults.appendChild(noResultsMessage);
+}
+
+//...
+
+//Call a function to process or display the data
+getAllProductsDetails(allProductsDetails);
+}
+ 
+</script>
 
 </html>

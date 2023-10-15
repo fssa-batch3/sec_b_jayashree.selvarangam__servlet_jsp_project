@@ -93,26 +93,7 @@ font-family: 'Quicksand', sans-serif;
   </head>
 
   <body>
-    <!-- header section starts  -->
-    <!-- <header class="header">
-            <input type="checkbox" name="" id="toggler">
-            <label for="toggler" class="fas fa-bars"></label>
-            <a href="../../index.html" class="logo"> Coffee <i class="fas fa-mug-hot"></i> </a>
-
-            <nav class="navbar">
-            <a href="../../index.html">Home</a>
-            <a href="../../pages/order/order-bestseller.html">Order</a>
-            <a href="../../pages/payment/payment.html">Pay</a>
-            <a href="../../pages/My orders/myorders.html">My orders</a>
-            <a href="../../pages/blogs/blog.html">Blogs</a>
-            </nav>
-            <div class="icons">
-            <a href="../../pages/add to cart/addtocart.html" class="fas fa-shopping-cart"></a>
-            <a href="../../pages/profile/profile.html" class="fas fa-user"></a>
-            </div>
-            <a href="../../pages/login/login.html" class="btn">Login</a>
-
-            </header> -->
+    <%@ include file="header.jsp" %>
 
     <section class="profile" id="profile">
       <section class="form">
@@ -190,6 +171,15 @@ font-family: 'Quicksand', sans-serif;
       };
     });
     
+    
+    function getQueryParam(name) {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        return urlSearchParams.get(name);
+      }
+
+      // Get the order_id and user_id from the URL
+      const order_id = getQueryParam('order_id');
+      const user_id = getQueryParam('user_id');
 
     const submit = document.getElementById("submit");
     submit.addEventListener("click", function () {
@@ -205,23 +195,115 @@ font-family: 'Quicksand', sans-serif;
         alert("fill the stars");
       }
       else{
-    	  const reviewLinkHref = '<%= request.getContextPath()%>/add_review?review_star=' + stars + '&review_message=' + review_value; // Add address_id here
+    	  const reviewLinkHref = '<%= request.getContextPath() %>/create_review?review_star=' + stars + '&review_message=' + review_value + '&order_id=' + order_id + '&user_id=' + user_id;
 
           
     	  reviewLink.href = reviewLinkHref;
          
-          alert('Order will be placed sucessfully');
+          alert('Thank you for your review');
     	  
       }
       
-      window.onpopstate = function(event) {
-    	    // Reload the current page when navigating back
-    	    location.reload();
-    	  };
+      
       
       
      // window.location.href = `../../pages/My orders/myorders.html`;
     });
   
   </script>
+  <script>
+let allProductsDetails = [];
+async function getAllProducts() {
+    try {
+        const response = await fetch("http://localhost:8080/expressocafe-web/AllProdServlet", {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP error! Status: "+ response.status);
+        }
+
+        const responseData = await response.json();
+
+        // Access the array of products from the 'data' property
+        allProductsDetails = responseData.data;
+		console.log("allProductsDetails",allProductsDetails);
+        // Call a function to process or display the data
+        getAllProductsDetails(allProductsDetails);
+    } catch (error) {
+        console.error("Error fetching product data:", error);
+    }
+}
+
+//Call the function to fetch product data
+getAllProducts();
+const rootPath = window.location.origin;
+// function to process or display the data
+
+function getAllProductsDetails(allProducts) {
+
+//Assuming you have these variables defined elsewhere in your code
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+//Function to process or display the data fetched from the database
+function getAllProductsDetails(allProducts) {
+// Add an event listener to the search input
+searchInput.addEventListener('input', function() {
+const searchQuery = this.value.trim();
+
+// Clear previous search results
+searchResults.innerHTML = '';
+
+if (searchQuery !== '') {
+  const results = getMatchingResults(searchQuery, allProducts);
+  displayResults(results);
+
+  if (results.length === 0) {
+    displayNoResultsMessage(); // Display 'No results found' message
+  }
+} else {
+  // Input field is empty, do not display 'No results found' message
+}
+});
+}
+
+//Function to get matching results from the fetched data
+function getMatchingResults(query, allProducts) {
+return allProducts.filter(function(product) {
+return product.name.toLowerCase().includes(query.toLowerCase());
+});
+}
+
+//Function to display search results
+function displayResults(results) {
+results.forEach(function(result) {
+const listItem = document.createElement('li');
+const listItem1 = document.createElement('a');
+
+// Assuming you have a product detail URL in your data
+const uuid = result.product_id;
+listItem1.setAttribute('href', "http://localhost:8080/expressocafe-web/product_detail?product_id="+uuid);
+listItem1.textContent = result.name;
+listItem.appendChild(listItem1);
+
+searchResults.appendChild(listItem);
+});
+}
+
+//Function to display 'No results found' message
+function displayNoResultsMessage() {
+const noResultsMessage = document.createElement('li');
+noResultsMessage.textContent = 'No results found.';
+searchResults.appendChild(noResultsMessage);
+}
+
+//...
+
+//Call a function to process or display the data
+getAllProductsDetails(allProductsDetails);
+}
+ 
+</script>
+  
 </html>

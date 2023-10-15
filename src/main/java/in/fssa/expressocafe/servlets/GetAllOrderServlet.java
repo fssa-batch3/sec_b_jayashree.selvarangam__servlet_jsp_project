@@ -50,11 +50,8 @@ public class GetAllOrderServlet extends HttpServlet {
 		List<Order> orderList = null;
 		
 		try {
-			
 			user = userService.findByEmail(email);
-			orderList =  orderService.GetAllOrder(user.getId());
-			
-			
+			orderList =  orderService.GetAllOrder(user.getId());		
 		} catch (ValidationException | ServiceException e) {
 			e.printStackTrace();
 			String getError = e.getMessage();
@@ -68,9 +65,7 @@ public class GetAllOrderServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/order.jsp");
 			rd.forward(request, response);
 		}
-		
 		request.setAttribute("orderList", orderList);
-		
 		RequestDispatcher rd = request.getRequestDispatcher("/order.jsp");
 		rd.forward(request, response);
 		

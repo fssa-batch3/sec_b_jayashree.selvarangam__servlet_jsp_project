@@ -11,29 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import in.fssa.expressocafe.exception.ServiceException;
 import in.fssa.expressocafe.exception.ValidationException;
-import in.fssa.expressocafe.model.Order;
+import in.fssa.expressocafe.exception.ServiceException;
 import in.fssa.expressocafe.model.Review;
 import in.fssa.expressocafe.model.User;
 import in.fssa.expressocafe.service.ReviewService;
 import in.fssa.expressocafe.service.UserService;
 
 /**
- * Servlet implementation class AddReviewServlet
+ * Servlet implementation class CreateReviewServlet
  */
-@WebServlet("/a")
-public class AddReviewServlet extends HttpServlet {
+@WebServlet("/create_review")
+public class CreateReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddReviewServlet() {
+    public CreateReviewServlet() {
         super();
-        // TODO Auto-generated constructor stub
-    }
 
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,33 +39,31 @@ public class AddReviewServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(false);
         // Get review details from request parameters
-        String email = (String)session.getAttribute("loggedUser");
-     //   int orderId = (int) request.getAttribute("order_id");
-        int reviewStar = Integer.parseInt(request.getParameter("review_star"));
-        String reviewMessage = request.getParameter("review_message");
-
+      
+        int userId = (int) request.getAttribute("userId");
+        int orderId = (int) request.getAttribute("orderId");
+        int reviewStar = (int) request.getAttribute("reviewStar");
+        String reviewMessage = (String)request.getAttribute("reviewMessage");
+        
         ReviewService reviewService = new ReviewService();
         UserService userService = new UserService();
 		User user = null ;
 		
 		try {
-			
-			user = userService.findByEmail(email);
             // Create a Review object and submit the review
             Review review = new Review();
             review.setUser(user);
-          //  Order order = new Order();
-         //   order.setOrderId(orderId);
-          //  review.setOrder(order);
+	          //  Order order = new Order();
+	          //   order.setOrderId(orderId);
+	          //  review.setOrder(order);
             review.setReviewStar(reviewStar);
             review.setReviewMessage(reviewMessage);
-
-            reviewService.createReviewService(user.getId(),1,reviewStar,reviewMessage);
+            reviewService.createReviewService(userId,orderId,reviewStar,reviewMessage);
 
             // Redirect to the getAllOrder servlet after review submission
-            //response.sendRedirect(request.getContextPath() + "/get_all_order");
-            System.out.print(false+"out1");
-
+        	RequestDispatcher rd = request.getRequestDispatcher("/get_all_order");
+    		rd.forward(request, response);	
+    		
         } catch (ServiceException e) {
             e.printStackTrace();
             String getError = e.getMessage();
@@ -76,31 +72,24 @@ public class AddReviewServlet extends HttpServlet {
             // Redirect to the review page with an error message
             response.sendRedirect(request.getContextPath() + "/review.jsp?error=" + getError);
 
-        } catch (ValidationException e) {
-            e.printStackTrace();
-            String getError = e.getMessage();
-            request.setAttribute("errorMessage", getError);
+        }
+	
 
-            // Redirect to the review page with an error message
-            response.sendRedirect(request.getContextPath() + "/review.jsp?error=" + getError);
-        } catch (com.google.protobuf.ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 
-//
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	System.out.print(false);
         // Get values from URL parameters
-      //  int orderId = Integer.parseInt(request.getParameter("order_id"));
+        int orderId = Integer.parseInt(request.getParameter("order_id"));
+        int userId = Integer.parseInt(request.getParameter("user_id"));
         int reviewStar = Integer.parseInt(request.getParameter("review_star"));
         String reviewMessage = request.getParameter("review_message");
 
         // You can then use these values as needed
         // For example, you can set them in request attributes for use in JSP
-     //   request.setAttribute("orderId", orderId);
+        request.setAttribute("userId", userId);
+         request.setAttribute("orderId", orderId);
         request.setAttribute("reviewStar", reviewStar);
         request.setAttribute("reviewMessage", reviewMessage);
 

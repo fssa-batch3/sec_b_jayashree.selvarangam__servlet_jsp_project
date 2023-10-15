@@ -1,3 +1,7 @@
+<%@page import="in.fssa.expressocafe.model.Review"%>
+<%@page import="in.fssa.expressocafe.service.UserService"%>
+<%@page import="in.fssa.expressocafe.model.User"%>
+<%@page import="in.fssa.expressocafe.service.ReviewService"%>
 <%@page import="in.fssa.expressocafe.model.DeliveryAddresses"%>
 <%@page import="in.fssa.expressocafe.service.DeliverAddressService"%>
 <%@page import="in.fssa.expressocafe.service.OrderService"%>
@@ -13,7 +17,8 @@
 <meta charset="ISO-8859-1">
 <title>order page</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <!-- <link rel="stylesheet" href="../../assets/css/myorder.css"> -->
         <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/header.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/footer.css ">
@@ -30,6 +35,30 @@ font-family: 'Quicksand', sans-serif;
   color: #fff;
   padding: 20px;
 } */
+/* .adre {
+    display: flex; /* Use flexbox for layout */
+/*     justify-content: space-around; /* Add space between the two sections */
+}
+
+/* .delivery-address,
+.review {
+    flex: 1; /* Distribute available space equally between the two sections */
+    
+/* } */ 
+
+    /* Use flexbox for horizontal arrangement */
+    .star-container {
+        display: flex;
+        background-color:white;
+    }
+
+    /* Styling for stars */
+    .star {
+        color: gold; /* Set the star color to gold (or your preferred color) */
+        font-size: 24px; /* Adjust the font size to control the star size */
+        margin-right: 5px; /* Add some spacing between stars */
+        background-color:white;
+    }
 
  h1 {
   margin: 0;
@@ -139,7 +168,12 @@ main {
               <div class="whole">
               <div>
 					<% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-
+					
+					<%-- <%	String email = (String)session.getAttribute("loggedUser");%>
+					<% User user = new User();%>
+					<% UserService user1 = new UserService(); %>
+					<% user = user1.findByEmail(email); %> --%>
+						
 <% if (errorMessage != null && !errorMessage.isEmpty()) { %>
     <p class="error-message"><%= errorMessage %></p>
 <% } %>
@@ -160,7 +194,7 @@ main {
 		                 %>
                  				    <%
               
-							    java.text.SimpleDateFormat formatter1 = new java.text.SimpleDateFormat("dd/MM/yyyy");
+							    java.text.SimpleDateFormat formatter1 = new java.text.SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 							    String orderDateStr1 = formatter1.format(orderdate); 
 							 /*
 							    java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("dd/MM/yyyy");
@@ -242,7 +276,7 @@ main {
                             <div class="o-d">
                                 <div class="req">
                                     <div class="order1_id">
-                                        <h3>Order_id: <%= order.getOrderCode() %></h3>
+                                        <h3>Order Id: <%= order.getOrderCode() %></h3>
                                     </div>
                                     <div class="order_date">
                                         <p>Ordered on: <%= orderDateStr1 %></p>
@@ -292,11 +326,58 @@ main {
                                 orderItemIndex++; // Increment the index
                             }
                                   %>
+                                
                                 <div class="delivery-address">
                                     <h4>Delivery Address:</h4>
                                      <% DeliveryAddresses deliveryAddress = new DeliverAddressService().findAddressById(order.getAddressId()) ;%>
                                     <p> <%= deliveryAddress.getAddress() %> <%= deliveryAddress.getLandmark() %><%= deliveryAddress.getCity() %></p>
                                 </div> 
+                                
+                              <div class="review">
+							   
+							    <%  if (currentDate.compareTo(deliveryDate) >= 0 && value==true) { %>
+							     <h4>Review:</h4>
+							    <% ReviewService review = new ReviewService(); %>
+							    <% boolean v = review.hasReviewBeenSubmittedService(order.getUserId(), order.getOrderId()); %>
+							    <%
+							    if (v == false) {
+							    %>
+							 <p>   <a href="<%= request.getContextPath() %>/review.jsp?order_id=<%=order.getOrderId()%>&user_id=<%= order.getUserId()%>">Write your review</a></p>
+							    
+							    <%
+							    } else {
+							    %>
+							
+							    <%
+							    ReviewService review1 = new ReviewService();
+							    Review r = review1.getReviewByUserIdAndOrderIdService(order.getUserId(), order.getOrderId());
+							    System.out.println(r.getReviewMessage());
+							    %> 
+							
+							    <div class="review-stars">
+							
+							        <div class="star-container">
+							            <%
+							            for (int j = 0; j < r.getReviewStar(); j++) {
+							            %>
+							            <button class="star">&#9733;</button>
+							            <%
+							            }
+							            %>
+							        </div>
+							        
+							          <div class="star-container">
+							              <h4><%= r.getReviewMessage() %></h4>
+							          </div>
+							
+							    <%
+							 }
+							    %>
+							    <%} %>
+							</div>
+						
+
+                                
                                 <div class="order-total">
                                     <h4>Total Price:</h4>
                                     <p>Rs. <%= order.getTotalCost() %></p>
@@ -339,6 +420,100 @@ main {
    
 	}
     </script>
+    <script>
+let allProductsDetails = [];
+async function getAllProducts() {
+    try {
+        const response = await fetch("http://localhost:8080/expressocafe-web/AllProdServlet", {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP error! Status: "+ response.status);
+        }
+
+        const responseData = await response.json();
+
+        // Access the array of products from the 'data' property
+        allProductsDetails = responseData.data;
+		console.log("allProductsDetails",allProductsDetails);
+        // Call a function to process or display the data
+        getAllProductsDetails(allProductsDetails);
+    } catch (error) {
+        console.error("Error fetching product data:", error);
+    }
+}
+
+//Call the function to fetch product data
+getAllProducts();
+const rootPath = window.location.origin;
+// function to process or display the data
+
+function getAllProductsDetails(allProducts) {
+
+//Assuming you have these variables defined elsewhere in your code
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+//Function to process or display the data fetched from the database
+function getAllProductsDetails(allProducts) {
+// Add an event listener to the search input
+searchInput.addEventListener('input', function() {
+const searchQuery = this.value.trim();
+
+// Clear previous search results
+searchResults.innerHTML = '';
+
+if (searchQuery !== '') {
+  const results = getMatchingResults(searchQuery, allProducts);
+  displayResults(results);
+
+  if (results.length === 0) {
+    displayNoResultsMessage(); // Display 'No results found' message
+  }
+} else {
+  // Input field is empty, do not display 'No results found' message
+}
+});
+}
+
+//Function to get matching results from the fetched data
+function getMatchingResults(query, allProducts) {
+return allProducts.filter(function(product) {
+return product.name.toLowerCase().includes(query.toLowerCase());
+});
+}
+
+//Function to display search results
+function displayResults(results) {
+results.forEach(function(result) {
+const listItem = document.createElement('li');
+const listItem1 = document.createElement('a');
+
+// Assuming you have a product detail URL in your data
+const uuid = result.product_id;
+listItem1.setAttribute('href', "http://localhost:8080/expressocafe-web/product_detail?product_id="+uuid);
+listItem1.textContent = result.name;
+listItem.appendChild(listItem1);
+
+searchResults.appendChild(listItem);
+});
+}
+
+//Function to display 'No results found' message
+function displayNoResultsMessage() {
+const noResultsMessage = document.createElement('li');
+noResultsMessage.textContent = 'No results found.';
+searchResults.appendChild(noResultsMessage);
+}
+
+//...
+
+//Call a function to process or display the data
+getAllProductsDetails(allProductsDetails);
+}
+ 
+</script>
     
 
 

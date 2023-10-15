@@ -32,8 +32,31 @@
 				font-family: 'Poppins', sans-serif;
 				font-family: 'Quicksand', sans-serif;
         }
-        </style>
+        /* Style for the div containing plus and minus buttons */
+    
+        .inc-dec-button{
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically in the center */
+  
+}
+
+/* Style for the plus and minus buttons */
+span.plus,
+span.minus {
+    display: inline-block;
+    cursor: pointer; /* Add a pointer cursor for better UX */
+    padding: 5px; /* Adjust padding as needed */
+}
+
+/* Style for the quantity */
+span.num {
+    margin: 0 10px; /* Adjust the margin to control spacing */
+    font-size: 16px; /* Adjust the font size as needed */
+    /* You can add additional styles for the quantity here */
+}
         
+        </style>
+     
     </head>
     <body>
 	<%@ include file="header.jsp" %>
@@ -123,12 +146,14 @@
                          <%} %>
                     </div>
                     <div class="inc-dec-button">
-                        <div>
+                       
                             <a href="quantity-inc-dec?action=dec&product_id=<%=cart.getProduct_id() %>&size_id=<%= cart.getSizeId()  %>">
                                 <span class="minus">
                                     <i class="fa-solid fa-minus"></i>
                                 </span>
                             </a>
+                       
+                          
                             <span class="num"><%= cart.getQuantity() %></span>
                          
                             <a href="quantity-inc-dec?action=inc&product_id=<%=cart.getProduct_id()  %>&size_id=<%= cart.getSizeId()%>">
@@ -136,7 +161,7 @@
                                     <i class="fa-solid fa-plus"></i>
                                 </span>
                             </a>
-                        </div>
+                       
                     </div>
                     <div class="beverage-costdetail">
                       <% double o = cart.getPrice() * cart.getQuantity(); %>
@@ -243,7 +268,7 @@
             <div class="address">
                 <div class="delivery-details">
                     <div class="delivery-name">
-                        Delivery to <span class="name" id="del-name">Jaya</span>
+                        Delivering to <span class="name" id="del-name"></span>
                     </div>
                    
                     <% if(delivery != null){%>
@@ -406,5 +431,99 @@
     });
 </script>
     
+<script>
+let allProductsDetails = [];
+async function getAllProducts() {
+    try {
+        const response = await fetch("http://localhost:8080/expressocafe-web/AllProdServlet", {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP error! Status: "+ response.status);
+        }
+
+        const responseData = await response.json();
+
+        // Access the array of products from the 'data' property
+        allProductsDetails = responseData.data;
+		console.log("allProductsDetails",allProductsDetails);
+        // Call a function to process or display the data
+        getAllProductsDetails(allProductsDetails);
+    } catch (error) {
+        console.error("Error fetching product data:", error);
+    }
+}
+
+//Call the function to fetch product data
+getAllProducts();
+const rootPath = window.location.origin;
+// function to process or display the data
+
+function getAllProductsDetails(allProducts) {
+
+//Assuming you have these variables defined elsewhere in your code
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+//Function to process or display the data fetched from the database
+function getAllProductsDetails(allProducts) {
+// Add an event listener to the search input
+searchInput.addEventListener('input', function() {
+const searchQuery = this.value.trim();
+
+// Clear previous search results
+searchResults.innerHTML = '';
+
+if (searchQuery !== '') {
+  const results = getMatchingResults(searchQuery, allProducts);
+  displayResults(results);
+
+  if (results.length === 0) {
+    displayNoResultsMessage(); // Display 'No results found' message
+  }
+} else {
+  // Input field is empty, do not display 'No results found' message
+}
+});
+}
+
+//Function to get matching results from the fetched data
+function getMatchingResults(query, allProducts) {
+return allProducts.filter(function(product) {
+return product.name.toLowerCase().includes(query.toLowerCase());
+});
+}
+
+//Function to display search results
+function displayResults(results) {
+results.forEach(function(result) {
+const listItem = document.createElement('li');
+const listItem1 = document.createElement('a');
+
+// Assuming you have a product detail URL in your data
+const uuid = result.product_id;
+listItem1.setAttribute('href', "http://localhost:8080/expressocafe-web/product_detail?product_id="+uuid);
+listItem1.textContent = result.name;
+listItem.appendChild(listItem1);
+
+searchResults.appendChild(listItem);
+});
+}
+
+//Function to display 'No results found' message
+function displayNoResultsMessage() {
+const noResultsMessage = document.createElement('li');
+noResultsMessage.textContent = 'No results found.';
+searchResults.appendChild(noResultsMessage);
+}
+
+//...
+
+//Call a function to process or display the data
+getAllProductsDetails(allProductsDetails);
+}
+ 
+</script>
 
 </html>

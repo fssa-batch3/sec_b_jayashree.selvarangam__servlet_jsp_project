@@ -1,5 +1,7 @@
 :root{
     --main-color:#443;
+    --main1-color: #666;
+    
     --bs-pink: #d63384;
     --bs-red: #dc3545;
     --bs-orange: #b94728;
@@ -53,11 +55,7 @@ section{
     margin-left: 10px;
 }
 
-.btn-button:hover{
-    border-radius: var(--border-radius-hover);
-    border:var(--border-hover);
-    
-} 
+
 
 body {
     background-image: url("https://iili.io/JHuycUQ.jpg");
@@ -140,6 +138,9 @@ body {
     border-radius: var(--border-radius);
     margin-top: 15px;
 }
+
+
+
 /* .inc-dec-button button:hover{
     border-radius: var(--border-radius-hover);
     border:var(--border-hover);
